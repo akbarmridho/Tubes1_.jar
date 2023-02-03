@@ -1,68 +1,77 @@
 package Models;
 
-import Enums.*;
-import java.util.*;
+import Enums.ObjectTypes;
+
+import java.util.List;
+import java.util.UUID;
 
 public class GameObject {
-  public UUID id;
-  public Integer size;
-  public Integer speed;
-  public Integer currentHeading;
-  public Position position;
-  public ObjectTypes gameObjectType;
+    public UUID id;
+    public Integer size;
+    public Integer speed;
+    public Integer currentHeading;
+    public Position position;
+    public ObjectTypes gameObjectType;
+    public Integer torpedoSalvoCount;
 
-  public GameObject(UUID id, Integer size, Integer speed, Integer currentHeading, Position position, ObjectTypes gameObjectType) {
-    this.id = id;
-    this.size = size;
-    this.speed = speed;
-    this.currentHeading = currentHeading;
-    this.position = position;
-    this.gameObjectType = gameObjectType;
-  }
+    public GameObject(UUID id, Integer size, Integer speed, Integer currentHeading, Position position, ObjectTypes gameObjectType, Integer torpedoSalvoCount) {
+        this.id = id;
+        this.size = size;
+        this.speed = speed;
+        this.currentHeading = currentHeading;
+        this.position = position;
+        this.gameObjectType = gameObjectType;
+        this.torpedoSalvoCount = torpedoSalvoCount;
+    }
 
-  public UUID getId() {
-    return id;
-  }
+    public static GameObject FromStateList(UUID id, List<Integer> stateList) {
+        Position position = new Position(stateList.get(4), stateList.get(5));
 
-  public void setId(UUID id) {
-    this.id = id;
-  }
+        if (stateList.size() == 8) {
+            return new GameObject(id, stateList.get(0), stateList.get(1), stateList.get(2), position, ObjectTypes.valueOf(stateList.get(3)), stateList.get(7));
+        } else {
+            return new GameObject(id, stateList.get(0), stateList.get(1), stateList.get(2), position, ObjectTypes.valueOf(stateList.get(3)), 0);
+        }
 
-  public int getSize() {
-    return size;
-  }
+    }
 
-  public void setSize(int size) {
-    this.size = size;
-  }
+    public UUID getId() {
+        return id;
+    }
 
-  public int getSpeed() {
-    return speed;
-  }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-  public void setSpeed(int speed) {
-    this.speed = speed;
-  }
+    public int getSize() {
+        return size;
+    }
 
-  public Position getPosition() {
-    return position;
-  }
+    public void setSize(int size) {
+        this.size = size;
+    }
 
-  public void setPosition(Position position) {
-    this.position = position;
-  }
+    public int getSpeed() {
+        return speed;
+    }
 
-  public ObjectTypes getGameObjectType() {
-    return gameObjectType;
-  }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
-  public void setGameObjectType(ObjectTypes gameObjectType) {
-    this.gameObjectType = gameObjectType;
-  }
+    public Position getPosition() {
+        return position;
+    }
 
-  public static GameObject FromStateList(UUID id, List<Integer> stateList)
-  {
-    Position position = new Position(stateList.get(4), stateList.get(5));
-    return new GameObject(id, stateList.get(0), stateList.get(1), stateList.get(2), position, ObjectTypes.valueOf(stateList.get(3)));
-  }
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public ObjectTypes getGameObjectType() {
+        return gameObjectType;
+    }
+
+    public void setGameObjectType(ObjectTypes gameObjectType) {
+        this.gameObjectType = gameObjectType;
+    }
 }
