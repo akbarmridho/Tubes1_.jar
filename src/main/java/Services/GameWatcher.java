@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class GameWatcher {
+    public static boolean shouldAct = false;
     public GameObject player = null;
     public List<GameObject> enemies;
     public List<GameObject> foods;
@@ -55,6 +56,8 @@ public class GameWatcher {
         for (Map.Entry<String, List<Integer>> objectEntry : data.getGameObjects().entrySet()) {
             this.handleObject(objectEntry);
         }
+
+        shouldAct = true;
     }
 
     private void handleObject(Map.Entry<String, List<Integer>> objectEntry) {

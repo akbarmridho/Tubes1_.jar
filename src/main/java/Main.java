@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
+import static Services.GameWatcher.shouldAct;
+
 public class Main {
     public static void main(String[] args) throws Exception {
         Logger logger = LoggerFactory.getLogger(Main.class);
@@ -58,7 +60,7 @@ public class Main {
             while (hubConnection.getConnectionState() == HubConnectionState.CONNECTED) {
                 Thread.sleep(20);
 
-                if (GameWatcherManager.getWatcher().player == null) {
+                if (GameWatcherManager.getWatcher().player == null || !shouldAct) {
                     continue;
                 }
                 var agent = AgentManager.getDefaultAgent();
@@ -66,6 +68,8 @@ public class Main {
                 if (hubConnection.getConnectionState() == HubConnectionState.CONNECTED) {
                     hubConnection.send("SendPlayerAction", agent.computeNextAction());
                 }
+
+                shouldAct = false;
             }
         });
 
