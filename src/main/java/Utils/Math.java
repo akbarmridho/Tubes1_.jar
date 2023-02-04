@@ -15,6 +15,11 @@ public class Math {
         return (direction + 360) % 360;
     }
 
+    public static int getInterceptHeading(float projectileSpeed, float targetHeading, float targetSpeed) {
+        // todo: sudut optimal untuk intercept
+        return 0;
+    }
+
     public static int toDegrees(double v) {
         return (int) (v * (180 / java.lang.Math.PI));
     }
