@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
 
 public class Mahamatra implements Agent {
     public static final int PRIORITY_NONE = 0;
-    public static final int PRIORITY_NORMAL = 1;
-    public static final int PRIORITY_HIGH = 2;
-    public static final int PRIORITY_EMERGENCY = 3;
+    public static final int PRIORITY_IDLE = 1;
+    public static final int PRIORITY_NORMAL = 2;
+    public static final int PRIORITY_HIGH = 3;
+    public static final int PRIORITY_EMERGENCY = 4;
     public static final int SHIP_SIZE_IDEAL = 50;
     public static final int SHIP_SIZE_CRITICAL = 20;
     private final ArrayList<State> states;
@@ -24,18 +25,32 @@ public class Mahamatra implements Agent {
         this.states = new ArrayList<>();
         this.states.add(new MahamatraExplorer());
         this.states.add(new MahamatraChaser());
-        this.setActiveState();
+        this.setActiveState(getStateCandidate());
     }
 
-    private void setActiveState() {
-        this.activeState = this.states.stream().sorted(Comparator.comparing(state -> state.takeControl() * (-1))).collect(Collectors.toList()).get(0);
-        this.activeState.giveControl();
+    private void setActiveState(State state) {
+        this.activeState = state;
+        this.activeState.receiveControl();
+    }
+
+    private State getStateCandidate() {
+        return this.states.stream().sorted(Comparator.comparing(state -> state.measureTakeoverPriority() * (-1))).collect(Collectors.toList()).get(0);
+    }
+
+    private State getEmergencyStateCandidate() {
+        return this.states.stream().sorted(Comparator.comparing(state -> state.measureEmergencyTakeoverPriority() * (-1))).collect(Collectors.toList()).get(0);
     }
 
     @Override
     public PlayerAction computeNextAction() {
         if (this.activeState.giveUpControl()) {
-            this.setActiveState();
+            this.setActiveState(getStateCandidate());
+        } else {
+            var candidate = getEmergencyStateCandidate();
+
+            if (candidate.measureEmergencyTakeoverPriority() > this.activeState.measureTakeoverPriority()) {
+                this.setActiveState(candidate);
+            }
         }
 
         return this.activeState.computeNextAction();

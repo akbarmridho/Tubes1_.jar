@@ -77,7 +77,7 @@ public class MahamatraChaser implements State {
     }
 
     @Override
-    public int takeControl() {
+    public int measureTakeoverPriority() {
         var watcher = GameWatcherManager.getWatcher();
         var potentialEnemy = SearchEnemy.smallerEnemyWithin(ENGAGE_ENEMY_RADIUS);
 
@@ -90,7 +90,12 @@ public class MahamatraChaser implements State {
     }
 
     @Override
-    public void giveControl() {
+    public int measureEmergencyTakeoverPriority() {
+        return PRIORITY_NONE;
+    }
+
+    @Override
+    public void receiveControl() {
         this.tickSinceHeadingAdjustment = 1000;
         this.target = this.potentialTarget;
         System.out.println("Mahamatra chaser was given control");

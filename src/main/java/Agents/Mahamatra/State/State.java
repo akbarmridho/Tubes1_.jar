@@ -5,7 +5,9 @@ import Agents.Agent;
 public interface State extends Agent {
     public boolean giveUpControl();
 
-    public int takeControl();
+    public int measureTakeoverPriority();
 
-    public void giveControl();
+    public int measureEmergencyTakeoverPriority();
+
+    public void receiveControl();
 }

@@ -42,8 +42,10 @@ public class MahamatraExplorer implements State {
     }
 
     @Override
-    public int takeControl() {
+    public int measureTakeoverPriority() {
         if (GameWatcherManager.getWatcher().player.size <= SHIP_SIZE_CRITICAL) {
+            return PRIORITY_HIGH;
+        } else if (GameWatcherManager.getWatcher().player.size <= SHIP_SIZE_CRITICAL + (SHIP_SIZE_IDEAL - SHIP_SIZE_CRITICAL) / 2) {
             return PRIORITY_NORMAL;
         }
 
@@ -51,7 +53,12 @@ public class MahamatraExplorer implements State {
     }
 
     @Override
-    public void giveControl() {
+    public int measureEmergencyTakeoverPriority() {
+        return PRIORITY_NONE;
+    }
+
+    @Override
+    public void receiveControl() {
         System.out.println("Mahamatra explorer was given control");
     }
 }
