@@ -49,4 +49,9 @@ public class MahamatraExplorer implements State {
 
         return PRIORITY_NONE;
     }
+
+    @Override
+    public void giveControl() {
+        System.out.println("Mahamatra explorer was given control");
+    }
 }

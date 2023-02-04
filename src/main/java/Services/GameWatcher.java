@@ -60,6 +60,16 @@ public class GameWatcher {
         shouldAct = true;
     }
 
+    public GameObject getEnemyById(UUID id) {
+        for (var enemy : this.enemies) {
+            if (enemy.getId().equals(id)) {
+                return enemy;
+            }
+        }
+
+        return null;
+    }
+
     private void handleObject(Map.Entry<String, List<Integer>> objectEntry) {
         GameObject object = GameObject.FromStateList(UUID.fromString(objectEntry.getKey()), objectEntry.getValue());
 
@@ -67,10 +77,8 @@ public class GameWatcher {
             case PLAYER:
                 if (object.getId().equals(this.id)) {
                     this.player = object;
-                    System.out.println("FOUND PLAYER");
                 } else {
                     this.enemies.add(object);
-                    System.out.println("FOUND ENEMY");
                 }
                 break;
             case FOOD:
