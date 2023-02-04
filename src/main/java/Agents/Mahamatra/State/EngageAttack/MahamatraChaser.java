@@ -90,7 +90,7 @@ public class MahamatraChaser implements State {
     }
 
     @Override
-    public int measureEmergencyTakeoverPriority() {
+    public int measureInterruptionPriority() {
         return PRIORITY_NONE;
     }
 

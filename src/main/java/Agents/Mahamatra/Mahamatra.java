@@ -38,7 +38,7 @@ public class Mahamatra implements Agent {
     }
 
     private State getEmergencyStateCandidate() {
-        return this.states.stream().sorted(Comparator.comparing(state -> state.measureEmergencyTakeoverPriority() * (-1))).collect(Collectors.toList()).get(0);
+        return this.states.stream().sorted(Comparator.comparing(state -> state.measureInterruptionPriority() * (-1))).collect(Collectors.toList()).get(0);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Mahamatra implements Agent {
         } else {
             var candidate = getEmergencyStateCandidate();
 
-            if (candidate.measureEmergencyTakeoverPriority() > this.activeState.measureTakeoverPriority()) {
+            if (candidate != this.activeState && candidate.measureInterruptionPriority() > this.activeState.measureTakeoverPriority()) {
                 this.setActiveState(candidate);
             }
         }

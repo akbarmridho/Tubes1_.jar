@@ -25,7 +25,7 @@ public class MahamatraEvader implements State {
     }
 
     @Override
-    public int measureEmergencyTakeoverPriority() {
+    public int measureInterruptionPriority() {
         return 0;
     }
 

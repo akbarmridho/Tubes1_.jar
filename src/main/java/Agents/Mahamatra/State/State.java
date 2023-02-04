@@ -7,7 +7,7 @@ public interface State extends Agent {
 
     public int measureTakeoverPriority();
 
-    public int measureEmergencyTakeoverPriority();
+    public int measureInterruptionPriority();
 
     public void receiveControl();
 }
