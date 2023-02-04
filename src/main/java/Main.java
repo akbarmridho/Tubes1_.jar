@@ -1,24 +1,17 @@
-import Enums.ObjectTypes;
-import Models.GameObject;
-import Models.GameState;
+import Agents.AgentManager;
 import Models.GameStateDto;
-import Models.Position;
-import Services.BotService;
+import Services.GameWatcherManager;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import com.microsoft.signalr.HubConnectionState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class Main {
-
     public static void main(String[] args) throws Exception {
         Logger logger = LoggerFactory.getLogger(Main.class);
-        BotService botService = new BotService();
         String token = System.getenv("Token");
         token = (token != null) ? token : UUID.randomUUID().toString();
 
@@ -29,8 +22,16 @@ public class Main {
 
         String url = ip + ":" + "5000" + "/runnerhub";
 
+        String botName;
+        if (args.length != 0) {
+            botName = String.format("%s - Dotjar", args[0]);
+        } else {
+            botName = "Dotjar";
+        }
+
         HubConnection hubConnection = HubConnectionBuilder.create(url)
                 .build();
+
 
         hubConnection.on("Disconnect", (id) -> {
             System.out.println("Disconnected:");
@@ -40,47 +41,30 @@ public class Main {
 
         hubConnection.on("Registered", (id) -> {
             System.out.println("Registered with the runner " + id);
-
-            Position position = new Position();
-            GameObject bot = new GameObject(id, 10, 20, 0, position, ObjectTypes.PLAYER, 0);
-            botService.setBot(bot);
+            GameWatcherManager.getWatcher().initializePlayer(id);
         }, UUID.class);
 
-        hubConnection.on("ReceiveGameState", (gameStateDto) -> {
-            GameState gameState = new GameState();
-            gameState.world = gameStateDto.getWorld();
+        hubConnection.on("ReceiveGameState", GameWatcherManager.getWatcher()::reloadData, GameStateDto.class);
 
-            for (Map.Entry<String, List<Integer>> objectEntry : gameStateDto.getGameObjects().entrySet()) {
-                gameState.getGameObjects().add(GameObject.FromStateList(UUID.fromString(objectEntry.getKey()), objectEntry.getValue()));
-            }
-
-            for (Map.Entry<String, List<Integer>> objectEntry : gameStateDto.getPlayerObjects().entrySet()) {
-                gameState.getPlayerGameObjects().add(GameObject.FromStateList(UUID.fromString(objectEntry.getKey()), objectEntry.getValue()));
-            }
-
-            botService.setGameState(gameState);
-        }, GameStateDto.class);
-
+        hubConnection.on("Error", (Throwable::printStackTrace), Throwable.class);
         hubConnection.start().blockingAwait();
 
         Thread.sleep(1000);
         System.out.println("Registering with the runner...");
-        hubConnection.send("Register", token, "dotjar");
+        hubConnection.send("Register", token, botName);
 
         //This is a blocking call
         hubConnection.start().subscribe(() -> {
             while (hubConnection.getConnectionState() == HubConnectionState.CONNECTED) {
                 Thread.sleep(20);
 
-                GameObject bot = botService.getBot();
-                if (bot == null) {
+                if (GameWatcherManager.getWatcher().player == null) {
                     continue;
                 }
+                var agent = AgentManager.getDefaultAgent();
 
-                botService.getPlayerAction().setPlayerId(bot.getId());
-                botService.computeNextPlayerAction(botService.getPlayerAction());
                 if (hubConnection.getConnectionState() == HubConnectionState.CONNECTED) {
-                    hubConnection.send("SendPlayerAction", botService.getPlayerAction());
+                    hubConnection.send("SendPlayerAction", agent.computeNextAction());
                 }
             }
         });

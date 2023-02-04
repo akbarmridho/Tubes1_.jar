@@ -1,5 +1,7 @@
 package Enums;
 
+import java.util.Objects;
+
 public enum ObjectTypes {
     PLAYER(1),
     FOOD(2),
@@ -26,7 +28,7 @@ public enum ObjectTypes {
 
     public static ObjectTypes valueOf(Integer value) {
         for (ObjectTypes objectType : ObjectTypes.values()) {
-            if (objectType.value == value) return objectType;
+            if (Objects.equals(objectType.value, value)) return objectType;
         }
 
         throw new IllegalArgumentException("Value not found");
