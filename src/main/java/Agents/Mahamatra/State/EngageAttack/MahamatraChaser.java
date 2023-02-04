@@ -1,5 +1,6 @@
 package Agents.Mahamatra.State.EngageAttack;
 
+import Agents.Mahamatra.Actions.Armory;
 import Agents.Mahamatra.Actions.SearchEnemy;
 import Agents.Mahamatra.State.State;
 import Enums.PlayerActions;
@@ -13,6 +14,8 @@ import static Agents.Mahamatra.Mahamatra.*;
 
 public class MahamatraChaser implements State {
     private final int ENGAGE_ENEMY_RADIUS = 500;
+
+    private final int HEADING_ADJUSTMENT_MAX_TURN = 8;
     private UUID target = null;
     private UUID potentialTarget = null;
     private int tickSinceHeadingAdjustment = 1000;
@@ -21,13 +24,13 @@ public class MahamatraChaser implements State {
     public PlayerAction computeNextAction() {
         var watcher = GameWatcherManager.getWatcher();
 
-        return adjustHeading();
+        if (tickSinceHeadingAdjustment >= HEADING_ADJUSTMENT_MAX_TURN) {
+            return adjustHeading();
+        } else if (watcher.player.torpedoSalvoCount > 0) {
+            return fireTorpedo();
+        }
 
-//        if (tickSinceHeadingAdjustment > 10) {
-//            return this.adjustHeading();
-//        }
-//
-//        return null;
+        return adjustHeading();
     }
 
     private PlayerAction adjustHeading() {
@@ -38,6 +41,17 @@ public class MahamatraChaser implements State {
         action.setAction(PlayerActions.FORWARD);
         action.setHeading(Math.getHeadingBetween(watcher.player, target));
         this.tickSinceHeadingAdjustment = 0;
+
+        return action;
+    }
+
+    private PlayerAction fireTorpedo() {
+        var watcher = GameWatcherManager.getWatcher();
+        var target = watcher.getEnemyById(this.target);
+        PlayerAction action = new PlayerAction();
+        action.setPlayerId(watcher.player.id);
+        action.setAction(PlayerActions.FIRETORPEDOES);
+        action.setHeading(Armory.calculateTorpedoHeading(watcher.player, target));
 
         return action;
     }

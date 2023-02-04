@@ -14,7 +14,27 @@ public class GameObject {
     public ObjectTypes gameObjectType;
     public Integer torpedoSalvoCount;
 
-    public GameObject(UUID id, Integer size, Integer speed, Integer currentHeading, Position position, ObjectTypes gameObjectType, Integer torpedoSalvoCount) {
+    public Integer effects;
+
+    public Integer supernovaAvailable;
+
+    public Integer shieldCount;
+
+    public Integer teleporterCount;
+
+    public GameObject(
+            UUID id,
+            Integer size,
+            Integer speed,
+            Integer currentHeading,
+            Position position,
+            ObjectTypes gameObjectType,
+            Integer torpedoSalvoCount,
+            Integer effects,
+            Integer supernovaAvailable,
+            Integer shieldCount,
+            Integer teleporterCount
+    ) {
         this.id = id;
         this.size = size;
         this.speed = speed;
@@ -22,17 +42,44 @@ public class GameObject {
         this.position = position;
         this.gameObjectType = gameObjectType;
         this.torpedoSalvoCount = torpedoSalvoCount;
+        this.effects = effects;
+        this.supernovaAvailable = supernovaAvailable;
+        this.shieldCount = shieldCount;
+        this.teleporterCount = teleporterCount;
     }
 
     public static GameObject FromStateList(UUID id, List<Integer> stateList) {
         Position position = new Position(stateList.get(4), stateList.get(5));
 
-        if (stateList.size() == 8) {
-            return new GameObject(id, stateList.get(0), stateList.get(1), stateList.get(2), position, ObjectTypes.valueOf(stateList.get(3)), stateList.get(7));
-        } else {
-            return new GameObject(id, stateList.get(0), stateList.get(1), stateList.get(2), position, ObjectTypes.valueOf(stateList.get(3)), 0);
+        if (stateList.size() == 7) {
+            return new GameObject(
+                    id,
+                    stateList.get(0),
+                    stateList.get(1),
+                    stateList.get(2),
+                    position,
+                    ObjectTypes.valueOf(stateList.get(3)),
+                    0,
+                    stateList.get(6),
+                    0,
+                    0,
+                    0
+            );
         }
 
+        return new GameObject(
+                id,
+                stateList.get(0),
+                stateList.get(1),
+                stateList.get(2),
+                position,
+                ObjectTypes.valueOf(stateList.get(3)),
+                stateList.get(7),
+                stateList.get(6),
+                stateList.get(8),
+                stateList.get(10),
+                stateList.get(9)
+        );
     }
 
     public UUID getId() {

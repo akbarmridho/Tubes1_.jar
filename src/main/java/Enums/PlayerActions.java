@@ -6,7 +6,7 @@ public enum PlayerActions {
     START_AFTERBURNER(3),
     STOP_AFTERBURNER(4),
 
-    FIRE_TORPEDOES(5),
+    FIRETORPEDOES(5),
 
     FIRE_SUPERNOVA(6),
 
