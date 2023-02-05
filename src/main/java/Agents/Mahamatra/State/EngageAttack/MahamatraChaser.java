@@ -3,6 +3,7 @@ package Agents.Mahamatra.State.EngageAttack;
 import Agents.Mahamatra.Actions.Armory;
 import Agents.Mahamatra.Actions.SearchEnemy;
 import Agents.Mahamatra.State.State;
+import Agents.Mahamatra.Utilities.AfterburnerManager;
 import Enums.PlayerActions;
 import Models.PlayerAction;
 import Services.GameWatcherManager;
@@ -20,9 +21,21 @@ public class MahamatraChaser implements State {
     private UUID potentialTarget = null;
     private int tickSinceHeadingAdjustment = 1000;
 
+    private AfterburnerManager afterburner;
+
+    public MahamatraChaser() {
+        this.afterburner = new AfterburnerManager(10);
+    }
+
     @Override
     public PlayerAction computeNextAction() {
         var watcher = GameWatcherManager.getWatcher();
+
+        var afterburner = this.afterburner.computeNextAction();
+
+        if (afterburner != null) {
+            return afterburner;
+        }
 
         if (tickSinceHeadingAdjustment >= HEADING_ADJUSTMENT_MAX_TURN) {
             return adjustHeading();
@@ -57,10 +70,10 @@ public class MahamatraChaser implements State {
     }
 
     @Override
-    public boolean giveUpControl() {
+    public boolean isFinished() {
         var watcher = GameWatcherManager.getWatcher();
 
-        if (target == null) {
+        if (this.target == null) {
             return true;
         }
 
@@ -98,6 +111,6 @@ public class MahamatraChaser implements State {
     public void receiveControl() {
         this.tickSinceHeadingAdjustment = 1000;
         this.target = this.potentialTarget;
-        System.out.println("Mahamatra chaser was given control");
+        System.out.format("Mahamatra chaser was given control. Attacking %s\n", this.target.toString());
     }
 }

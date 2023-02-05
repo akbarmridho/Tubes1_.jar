@@ -15,7 +15,7 @@ public class MahamatraEvader implements State {
     }
 
     @Override
-    public boolean giveUpControl() {
+    public boolean isFinished() {
         return false;
     }
 

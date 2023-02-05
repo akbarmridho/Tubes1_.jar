@@ -32,7 +32,7 @@ public class MahamatraExplorer implements State {
     }
 
     @Override
-    public boolean giveUpControl() {
+    public boolean isFinished() {
         if (manualGiveUp) {
             manualGiveUp = false;
             return true;

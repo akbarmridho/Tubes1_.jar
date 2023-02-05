@@ -33,8 +33,7 @@ public class GameObject {
             Integer effects,
             Integer supernovaAvailable,
             Integer shieldCount,
-            Integer teleporterCount) 
-    {
+            Integer teleporterCount) {
         this.id = id;
         this.size = size;
         this.speed = speed;
@@ -120,5 +119,9 @@ public class GameObject {
 
     public void setGameObjectType(ObjectTypes gameObjectType) {
         this.gameObjectType = gameObjectType;
+    }
+
+    public boolean isAfterburnerActive() {
+        return (this.effects & 1) == 1;
     }
 }

@@ -15,7 +15,7 @@ public class MahamatraIdle implements State {
     }
 
     @Override
-    public boolean giveUpControl() {
+    public boolean isFinished() {
         return true;
     }
 

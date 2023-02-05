@@ -17,6 +17,9 @@ public class Mahamatra implements Agent {
     public static final int PRIORITY_HIGH = 3;
     public static final int PRIORITY_EMERGENCY = 4;
     public static final int SHIP_SIZE_IDEAL = 50;
+    public static final int SHIP_SIZE_AFTERBURNER_CUTOFF = 60;
+
+    public static final int SHIP_SIZE_AFTERBURNER_SAFE = 75;
     public static final int SHIP_SIZE_CRITICAL = 20;
     private final ArrayList<State> states;
     private State activeState;
@@ -43,7 +46,7 @@ public class Mahamatra implements Agent {
 
     @Override
     public PlayerAction computeNextAction() {
-        if (this.activeState.giveUpControl()) {
+        if (this.activeState.isFinished()) {
             this.setActiveState(getStateCandidate());
         } else {
             var candidate = getEmergencyStateCandidate();
