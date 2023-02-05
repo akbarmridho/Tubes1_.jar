@@ -33,8 +33,8 @@ public class GameObject {
             Integer effects,
             Integer supernovaAvailable,
             Integer shieldCount,
-            Integer teleporterCount
-    ) {
+            Integer teleporterCount) 
+    {
         this.id = id;
         this.size = size;
         this.speed = speed;
