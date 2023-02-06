@@ -4,7 +4,9 @@ import Agents.Agent;
 import Agents.Mahamatra.State.EngageAttack.MahamatraChaser;
 import Agents.Mahamatra.State.Exploring.MahamatraExplorer;
 import Agents.Mahamatra.State.State;
+import Enums.PlayerActions;
 import Models.PlayerAction;
+import Services.GameWatcherManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -46,16 +48,26 @@ public class Mahamatra implements Agent {
 
     @Override
     public PlayerAction computeNextAction() {
+        boolean switched = false;
+
         if (this.activeState.isFinished()) {
+            switched = true;
             this.setActiveState(getStateCandidate());
         } else {
             var candidate = getEmergencyStateCandidate();
 
             if (candidate != this.activeState && candidate.measureInterruptionPriority() > this.activeState.measureTakeoverPriority()) {
                 this.setActiveState(candidate);
+                switched = true;
             }
         }
 
+        if (switched && GameWatcherManager.getWatcher().player.isAfterburnerActive()) {
+            PlayerAction action = new PlayerAction();
+            action.setAction(PlayerActions.STOPAFTERBURNER);
+            return action;
+        }
+        
         return this.activeState.computeNextAction();
     }
 }

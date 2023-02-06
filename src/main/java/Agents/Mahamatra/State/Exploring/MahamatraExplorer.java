@@ -1,6 +1,6 @@
 package Agents.Mahamatra.State.Exploring;
 
-import Agents.Mahamatra.Actions.SearchFood;
+import Actions.SearchFood;
 import Agents.Mahamatra.State.State;
 import Enums.PlayerActions;
 import Models.PlayerAction;

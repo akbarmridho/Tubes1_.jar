@@ -1,7 +1,7 @@
 package Agents.Mahamatra.State.EngageAttack;
 
-import Agents.Mahamatra.Actions.Armory;
-import Agents.Mahamatra.Actions.SearchEnemy;
+import Actions.Armory;
+import Actions.SearchEnemy;
 import Agents.Mahamatra.State.State;
 import Agents.Mahamatra.Utilities.AfterburnerManager;
 import Enums.PlayerActions;
@@ -37,6 +37,12 @@ public class MahamatraChaser implements State {
             return afterburner;
         }
 
+        var anotherTarget = this.getPotentialTarget();
+
+        if (anotherTarget != null && this.target != anotherTarget) {
+            this.target = anotherTarget;
+        }
+
         if (tickSinceHeadingAdjustment >= HEADING_ADJUSTMENT_MAX_TURN) {
             return adjustHeading();
         } else if (watcher.player.torpedoSalvoCount > 0) {
@@ -69,6 +75,16 @@ public class MahamatraChaser implements State {
         return action;
     }
 
+    private UUID getPotentialTarget() {
+        var enemy = SearchEnemy.smallerEnemyWithin(ENGAGE_ENEMY_RADIUS);
+
+        if (enemy == null) {
+            return null;
+        }
+
+        return enemy.getId();
+    }
+
     @Override
     public boolean isFinished() {
         var watcher = GameWatcherManager.getWatcher();
@@ -92,13 +108,14 @@ public class MahamatraChaser implements State {
     @Override
     public int measureTakeoverPriority() {
         var watcher = GameWatcherManager.getWatcher();
-        var potentialEnemy = SearchEnemy.smallerEnemyWithin(ENGAGE_ENEMY_RADIUS);
+        var potentialEnemy = this.getPotentialTarget();
 
         if (potentialEnemy == null) {
             return PRIORITY_NONE;
         }
 
-        this.potentialTarget = potentialEnemy.getId();
+        this.potentialTarget = potentialEnemy;
+
         return PRIORITY_NORMAL;
     }
 
