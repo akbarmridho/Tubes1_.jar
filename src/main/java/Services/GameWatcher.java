@@ -12,6 +12,7 @@ import java.util.UUID;
 public class GameWatcher {
     public static boolean shouldAct = false;
     public GameObject player = null;
+    public Radar radar;
     public List<GameObject> enemies;
     public List<GameObject> foods;
     public List<GameObject> gasClouds;
@@ -28,12 +29,11 @@ public class GameWatcher {
         this.asteroidFields = new ArrayList<>();
         this.torpedoes = new ArrayList<>();
         this.others = new ArrayList<>();
+        this.radar = new Radar();
     }
 
     public void initializePlayer(UUID id) {
         this.id = id;
-//        Position position = new Position();
-//        this.player = new GameObject(id, 10, 20, 0, position, ObjectTypes.PLAYER, 0);
     }
 
     private void clearObjects() {
@@ -58,6 +58,17 @@ public class GameWatcher {
         }
 
         shouldAct = true;
+    }
+
+    public void reloadRadar() {
+        this.radar.clear();
+        this.radar.updatePlayer(this.player);
+        this.enemies.forEach(enemy -> this.radar.updateEnemy(enemy));
+        this.foods.forEach(food -> this.radar.updateFood(food));
+        this.gasClouds.forEach(gas -> this.radar.updateGasCloud(gas));
+        this.asteroidFields.forEach(asteroid -> this.radar.updateAsteroidField(asteroid));
+        this.torpedoes.forEach(torpedo -> this.radar.updateTorpedoes(torpedo));
+        this.others.forEach(other -> this.radar.updateOther(other));
     }
 
     public GameObject getEnemyById(UUID id) {
