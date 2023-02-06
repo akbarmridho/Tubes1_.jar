@@ -48,4 +48,10 @@ public class Math {
         return (450 - deg) % 360;
     }
 
+    public static boolean incomingTorpedo(GameObject player, GameObject torpedo) {
+        int targetHeading = getHeadingBetween(torpedo, player);
+        int tolerance = toDegrees(java.lang.Math.atan(player.size / getDistanceBetween(player, torpedo)));
+
+        return java.lang.Math.abs(targetHeading - torpedo.currentHeading) <= tolerance;
+    }
 }

@@ -1,7 +1,11 @@
 package Actions;
 
 import Models.GameObject;
+import Services.GameWatcherManager;
 import Utils.Math;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Armory {
     public static int TORPEDO_SPEED = 60;
@@ -20,4 +24,18 @@ public class Armory {
 //        System.out.format("Degree diff %d\n", newIntercept - oldIntercept);
         return oldIntercept;
     }
+
+    public static List<GameObject> getIncomingTorpedoes() {
+        var result = new ArrayList<GameObject>();
+        var watcher = GameWatcherManager.getWatcher();
+
+        watcher.torpedoes.forEach(torpedo -> {
+            if (Math.incomingTorpedo(watcher.player, torpedo)) {
+                result.add(torpedo);
+            }
+        });
+
+        return result;
+    }
+
 }
