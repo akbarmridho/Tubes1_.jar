@@ -81,6 +81,7 @@ public class GameWatcher {
                     this.enemies.add(object);
                 }
                 break;
+            case SUPER_FOOD:
             case FOOD:
                 this.foods.add(object);
                 break;
