@@ -1,4 +1,4 @@
-package Agents.Mahamatra.Actions;
+package Actions;
 
 import Models.GameObject;
 import Services.GameWatcher;
