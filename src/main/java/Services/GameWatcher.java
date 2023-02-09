@@ -58,6 +58,7 @@ public class GameWatcher {
         }
 
         shouldAct = true;
+        this.reloadRadar();
     }
 
     public void reloadRadar() {

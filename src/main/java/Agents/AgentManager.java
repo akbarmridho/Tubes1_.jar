@@ -1,5 +1,6 @@
 package Agents;
 
+import Agents.Ling.Ling;
 import Agents.Mahamatra.Mahamatra;
 import Agents.Paimon.Paimon;
 
@@ -7,7 +8,8 @@ import java.util.HashMap;
 
 enum AgentNames {
     PAIMON,
-    MAHAMATRA;
+    MAHAMATRA,
+    LING;
 }
 
 public class AgentManager {
@@ -22,12 +24,14 @@ public class AgentManager {
             agents.put(name, new Paimon());
         } else if (name == AgentNames.MAHAMATRA) {
             agents.put(name, new Mahamatra());
+        } else if (name == AgentNames.LING) {
+            agents.put(name, new Ling());
         }
 
         return agents.get(name);
     }
 
     public static Agent getDefaultAgent() {
-        return getAgent(AgentNames.MAHAMATRA);
+        return getAgent(AgentNames.LING);
     }
 }

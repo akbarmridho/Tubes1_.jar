@@ -44,11 +44,15 @@ public class Attacker implements StrategyInterface {
     }
 
     private PlayerAction headingAdjustment() {
+        if (this.target == null) {
+            return null;
+        }
+
         var targetSection = watcher.radar.determineSection(this.target);
         var currentHeading = watcher.radar.heading;
         var radarSectionCount = watcher.radar.sectionCount;
         // cek jika ada kapal yang akan nabrak
-        if (this.target != null && Math.potentialIntercept(this.watcher.player, this.target)) {
+        if (Math.potentialIntercept(this.watcher.player, this.target)) {
             // cek jika sudah pada course yang tepat (manuver menghindar)
             Integer[] safeSection = new Integer[]{(targetSection - 1) % radarSectionCount,
                     (targetSection - 2) % radarSectionCount,
@@ -83,10 +87,12 @@ public class Attacker implements StrategyInterface {
                     (targetSection + 1) % radarSectionCount};
         }
 
-        var currentHeadingSection = this.watcher.radar.determineSection(currentHeading);
+        if (currentHeading != null) {
+            var currentHeadingSection = this.watcher.radar.determineSection(currentHeading);
 
-        if (List.of(safeSection).contains(currentHeadingSection)) {
-            return null;
+            if (List.of(safeSection).contains(currentHeadingSection)) {
+                return null;
+            }
         }
 
         var potentialAreas = this.watcher.radar.getMostAdvantageousAreaIn(safeSection);
