@@ -54,4 +54,13 @@ public class Math {
 
         return java.lang.Math.abs(targetHeading - projectile.currentHeading) <= tolerance;
     }
+
+    public static double calculateAngularVelocity(GameObject pivot, GameObject target) {
+        // todo: benerin rumusnya
+        var relativeHeading = getHeadingBetween(pivot, target) - target.currentHeading;
+        var speedPerpendicular = java.lang.Math.sin(toRadians(relativeHeading)) * target.speed;
+        var distance = getDistanceBetween(pivot, target);
+
+        return speedPerpendicular / distance;
+    }
 }
