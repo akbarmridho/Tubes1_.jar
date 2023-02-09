@@ -7,6 +7,8 @@ import Agents.Ling.StrategyInterface;
 import Enums.PlayerActions;
 import Models.GameObject;
 import Models.PlayerAction;
+import Services.GameWatcher;
+import Services.GameWatcherManager;
 import Services.RadarUnitArea;
 import Utils.Math;
 
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class Attacker implements StrategyInterface {
     private static int ANGULAR_VELOCITY_OFFSET = 30;
+    private final GameWatcher watcher = GameWatcherManager.getWatcher();
     private GameObject target = null;
 
     @Override
