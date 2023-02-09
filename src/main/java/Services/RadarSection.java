@@ -7,10 +7,13 @@ public class RadarSection {
     public RadarUnitArea medium_range;
     public RadarUnitArea long_range;
 
+    public GameObject player;
+
     public RadarSection() {
         this.short_range = new RadarUnitArea();
         this.medium_range = new RadarUnitArea();
         this.long_range = new RadarUnitArea();
+        this.player = null;
     }
 
     public void clear() {
@@ -43,6 +46,13 @@ public class RadarSection {
         this.getAreaByRange(range).updateEnemy(object);
     }
 
+    public void updatePlayer(GameObject object) {
+        this.player = object;
+        this.short_range.updatePlayer(object);
+        this.medium_range.updatePlayer(object);
+        this.long_range.updatePlayer(object);
+    }
+
     private RadarUnitArea getAreaByRange(int range) {
         if (range == 0) {
             return this.short_range;
@@ -51,5 +61,15 @@ public class RadarSection {
         }
 
         return this.long_range;
+    }
+
+    public double measureShortRangeAdvantage() {
+        return this.short_range.measureOverallAdvantage();
+    }
+
+    public double measureOverallAdvantage() {
+        return this.short_range.measureOverallAdvantage() +
+                this.medium_range.measureOverallAdvantage() * 0.5 +
+                this.long_range.measureOverallAdvantage() * 0.2;
     }
 }

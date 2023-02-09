@@ -9,20 +9,11 @@ import java.util.List;
 
 public class Armory {
     public static int TORPEDO_SPEED = 60;
+    public static int TORPEDO_RADIUS_DETECTION = 500;
 
     public static int calculateTorpedoHeading(GameObject player, GameObject target) {
         // todo: gunakan fungsi getInterceptHeading
-
-        var oldIntercept = Math.getHeadingBetween(player, target);
-//        var newIntercept = Math.getIntercept(
-//                TORPEDO_SPEED,
-//                target.currentHeading,
-//                target.speed,
-//                target.getPosition().x - player.getPosition().x,
-//                target.getPosition().y - player.getPosition().y);
-
-//        System.out.format("Degree diff %d\n", newIntercept - oldIntercept);
-        return oldIntercept;
+        return Math.getHeadingBetween(player, target);
     }
 
     public static List<GameObject> getIncomingTorpedoes() {
@@ -30,8 +21,10 @@ public class Armory {
         var watcher = GameWatcherManager.getWatcher();
 
         watcher.torpedoes.forEach(torpedo -> {
-            if (Math.incomingTorpedo(watcher.player, torpedo)) {
-                result.add(torpedo);
+            if (Math.getDistanceBetween(watcher.player, torpedo) < TORPEDO_RADIUS_DETECTION) {
+                if (Math.potentialIntercept(watcher.player, torpedo)) {
+                    result.add(torpedo);
+                }
             }
         });
 

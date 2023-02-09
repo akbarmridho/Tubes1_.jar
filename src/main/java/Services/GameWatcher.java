@@ -69,6 +69,7 @@ public class GameWatcher {
         this.asteroidFields.forEach(asteroid -> this.radar.updateAsteroidField(asteroid));
         this.torpedoes.forEach(torpedo -> this.radar.updateTorpedoes(torpedo));
         this.others.forEach(other -> this.radar.updateOther(other));
+        this.radar.predictShipHeading();
     }
 
     public GameObject getEnemyById(UUID id) {

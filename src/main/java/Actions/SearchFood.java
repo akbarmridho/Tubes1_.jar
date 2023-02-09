@@ -24,4 +24,19 @@ public class SearchFood {
 
         return sortedFood.get(0);
     }
+
+    public static GameObject closestSafestFood() {
+        GameWatcher watcher = GameWatcherManager.getWatcher();
+
+        var potentialArea = watcher.radar.getMostAdvantageousArea();
+
+        GameObject result = null;
+        int i = 0;
+
+        while (result == null && i < potentialArea.size()) {
+            result = potentialArea.get(i++).getClosestFood();
+        }
+
+        return result;
+    }
 }

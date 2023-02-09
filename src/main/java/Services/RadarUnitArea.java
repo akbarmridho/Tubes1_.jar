@@ -1,9 +1,12 @@
 package Services;
 
 import Models.GameObject;
+import Utils.Math;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RadarUnitArea {
     public List<GameObject> enemies;
@@ -13,6 +16,8 @@ public class RadarUnitArea {
     public List<GameObject> torpedoes;
     public List<GameObject> others;
 
+    public GameObject player;
+
     public RadarUnitArea() {
         this.enemies = new ArrayList<>();
         this.foods = new ArrayList<>();
@@ -20,6 +25,7 @@ public class RadarUnitArea {
         this.asteroidFields = new ArrayList<>();
         this.torpedoes = new ArrayList<>();
         this.others = new ArrayList<>();
+        this.player = null;
     }
 
     public void clear() {
@@ -55,4 +61,43 @@ public class RadarUnitArea {
         this.enemies.add(object);
     }
 
+    public void updatePlayer(GameObject object) {
+        this.player = object;
+    }
+
+    public double measureFoodAdvantage() {
+        return this.foods.size();
+    }
+
+    public double measureThreatLevel() {
+        return this.enemies.stream().mapToDouble(enemy -> java.lang.Math.max(enemy.getSize() - 0.05 * this.player.getSize(), 5)).sum();
+    }
+
+    public double measureTorpedoThreatLevel() {
+        return this.torpedoes.stream().mapToDouble(torpedo -> Math.potentialIntercept(this.player, torpedo) ? 10 : 0).sum();
+    }
+
+    public double measureTerrainDisadvantage() {
+        return this.asteroidFields.size() * 2 + this.gasClouds.size() * 5;
+    }
+
+    public double measureOverallAdvantage() {
+        return this.measureFoodAdvantage() -
+                this.measureThreatLevel() -
+                this.measureTorpedoThreatLevel() -
+                this.measureTerrainDisadvantage();
+    }
+
+    public GameObject getClosestFood() {
+        if (this.foods.size() == 0) {
+            return null;
+        }
+
+        var sortedFood = this.foods.
+                stream().
+                sorted(Comparator.comparing(food -> Math.getDistanceBetween(player, food))).
+                collect(Collectors.toList());
+
+        return sortedFood.get(0);
+    }
 }
