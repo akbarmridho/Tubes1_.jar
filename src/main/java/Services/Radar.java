@@ -13,8 +13,8 @@ public class Radar {
     public final int MEDIUM_RANGE_OFFSET = 500;
     public final int sectionCount;
     private final List<RadarSection> sections;
+    public GameObject heading;
     private GameObject player;
-    private GameObject heading;
 
     public Radar(int sectionCount) {
         this.sectionCount = sectionCount;
@@ -69,7 +69,7 @@ public class Radar {
         this.sections.get(determineSection(object)).updateEnemy(object, this.determineRange(object));
     }
 
-    private int determineSection(GameObject object) {
+    public int determineSection(GameObject object) {
         int heading = Math.getHeadingBetween(this.player, object);
         return (heading * this.sectionCount / 360) % this.sectionCount;
     }
@@ -94,6 +94,19 @@ public class Radar {
 
     public List<RadarUnitArea> getMostAdvantageousArea() {
         return this.sections.stream().
+                sorted(Comparator.comparing(RadarSection::measureShortRangeAdvantage).reversed()).
+                map(each -> each.short_range).
+                collect(Collectors.toList());
+    }
+
+    public List<RadarUnitArea> getMostAdvantageousAreaIn(Integer[] targetArea) {
+        List<RadarSection> filteredSection = new ArrayList<>();
+
+        for (int j : targetArea) {
+            filteredSection.add(this.sections.get(j));
+        }
+
+        return filteredSection.stream().
                 sorted(Comparator.comparing(RadarSection::measureShortRangeAdvantage).reversed()).
                 map(each -> each.short_range).
                 collect(Collectors.toList());
