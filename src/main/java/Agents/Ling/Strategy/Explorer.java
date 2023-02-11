@@ -10,6 +10,7 @@ import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
 import Utils.Math;
+import Models.GameObject;
 
 public class Explorer implements StrategyInterface {
     public static final int SHIP_SIZE_CRITICAL = 20;
@@ -42,11 +43,20 @@ public class Explorer implements StrategyInterface {
             } else {
                 // todo: tembak bot atau gas cloud terdekat
                 if (this.watcher.player.torpedoSalvoCount >= 5 && this.watcher.player.getSize() >= SHIP_SIZE_CRITICAL * 2) {
-                    var closestEnemy = SearchEnemy.closestEnemy();
-                    System.out.println("Explorer firing torpedo");
-                    return Armory.fireTorpedo(closestEnemy);
+                    // Kalo ada gas cloud, tembak gas cloud
+                    GameObject gas = this.watcher.radar.closestGasCloud();
+                    if ( gas != null){
+                        System.out.println("Firing gas clouds");
+                        return Armory.fireTorpedo(gas);
+                    } else {
+                        var closestEnemy = SearchEnemy.closestEnemy();
+                        System.out.println("Explorer firing torpedo");
+                        return Armory.fireTorpedo(closestEnemy);
+                    }
                 }
             }
+
+
         }
 
         return act;
