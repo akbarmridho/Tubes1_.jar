@@ -35,8 +35,9 @@ public class Explorer implements StrategyInterface {
         var currentHeading = this.watcher.radar.heading;
 
         if (currentHeading != null) {
+            var headingDiff = java.lang.Math.abs(watcher.player.currentHeading - act.getHeading());
             // unstuck player
-            if (java.lang.Math.abs(watcher.player.currentHeading - act.getHeading()) > 150) {
+            if (headingDiff > 150 && headingDiff < 210) {
                 act.setHeading(watcher.player.currentHeading);
             } else {
                 // todo: tembak bot atau gas cloud terdekat
