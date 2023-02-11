@@ -2,10 +2,16 @@ package Utils;
 
 import Models.GameObject;
 
+import static java.lang.Math.abs;
+
 public class Math {
+    public static int getModulus(int n, int m) {
+        return (n < 0) ? (m - (abs(n) % m)) % m : (n % m);
+    }
+
     public static double getDistanceBetween(GameObject object1, GameObject object2) {
-        var triangleX = java.lang.Math.abs(object1.getPosition().x - object2.getPosition().x);
-        var triangleY = java.lang.Math.abs(object1.getPosition().y - object2.getPosition().y);
+        var triangleX = abs(object1.getPosition().x - object2.getPosition().x);
+        var triangleY = abs(object1.getPosition().y - object2.getPosition().y);
         return java.lang.Math.sqrt(triangleX * triangleX + triangleY * triangleY);
     }
 
@@ -52,7 +58,13 @@ public class Math {
         int targetHeading = getHeadingBetween(projectile, target);
         int tolerance = toDegrees(java.lang.Math.atan(target.size / getDistanceBetween(target, projectile)));
 
-        return java.lang.Math.abs(targetHeading - projectile.currentHeading) <= tolerance;
+        return abs(targetHeading - projectile.currentHeading) <= tolerance;
+    }
+
+    public static boolean potentialInterceptStatic(GameObject staticObject, GameObject player) {
+        int targetHeading = getHeadingBetween(player, staticObject);
+
+        return abs(targetHeading - player.currentHeading) <= 10;
     }
 
     public static double calculateAngularVelocity(GameObject pivot, GameObject target) {
@@ -61,6 +73,6 @@ public class Math {
         var speedPerpendicular = java.lang.Math.sin(toRadians(relativeHeading)) * target.speed;
         var distance = getDistanceBetween(pivot, target);
 
-        return speedPerpendicular / distance;
+        return toDegrees(speedPerpendicular / distance);
     }
 }

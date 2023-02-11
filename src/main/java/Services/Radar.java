@@ -103,7 +103,7 @@ public class Radar {
         List<RadarSection> filteredSection = new ArrayList<>();
 
         for (int j : targetArea) {
-            filteredSection.add(this.sections.get(j));
+            filteredSection.add(this.sections.get(Math.getModulus(j, this.sectionCount)));
         }
 
         return filteredSection.stream().
@@ -113,15 +113,23 @@ public class Radar {
     }
 
     public void predictShipHeading() {
-        var area = this.sections.get(this.determineSection(this.player)).short_range;
+//        var section = this.sections.get(this.determineSection(this.player));
         List<GameObject> potential = new ArrayList<GameObject>();
+        this.sections.forEach(section -> {
+            section.short_range.foods.
+                    forEach(food -> {
+                        if (Math.potentialInterceptStatic(food, this.player)) {
+                            potential.add(food);
+                        }
+                    });
 
-        area.foods.
-                forEach(food -> {
-                    if (Math.potentialIntercept(food, this.player)) {
-                        potential.add(food);
-                    }
-                });
+            section.medium_range.foods.
+                    forEach(food -> {
+                        if (Math.potentialInterceptStatic(food, this.player)) {
+                            potential.add(food);
+                        }
+                    });
+        });
 
         if (potential.size() == 0) {
             this.heading = null;

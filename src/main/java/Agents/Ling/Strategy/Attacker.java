@@ -15,7 +15,9 @@ import Utils.Math;
 import java.util.List;
 
 public class Attacker implements StrategyInterface {
-    private static int ANGULAR_VELOCITY_OFFSET = 30;
+    private final int ANGULAR_VELOCITY_OFFSET = 15;
+
+    private final int SHIP_SAFE_SIZE = 50;
     private final GameWatcher watcher = GameWatcherManager.getWatcher();
     private GameObject target = null;
 
@@ -23,6 +25,10 @@ public class Attacker implements StrategyInterface {
     public PlayerAction computeNextAction() {
         // cek jika memerlukan heading adjustment
         var adjustment = headingAdjustment();
+
+        if (this.watcher.player.torpedoSalvoCount >= 5 && this.watcher.player.getSize() >= SHIP_SAFE_SIZE) {
+            return Armory.fireTorpedo(this.target);
+        }
 
         if (adjustment != null) {
             return adjustment;
@@ -33,11 +39,7 @@ public class Attacker implements StrategyInterface {
         }
 
         if (this.watcher.player.torpedoSalvoCount > 0) {
-            var heading = Armory.calculateTorpedoHeading(this.watcher.player, this.target);
-            var action = new PlayerAction();
-            action.setHeading(heading);
-            action.setAction(PlayerActions.FIRETORPEDOES);
-            return action;
+            return Armory.fireTorpedo(this.target);
         }
 
         return null;
@@ -74,7 +76,7 @@ public class Attacker implements StrategyInterface {
         }
 
         // fokus mengejar tetapi tetap jaga jarak
-        var angularVelocity = Math.toDegrees(Math.calculateAngularVelocity(this.watcher.player, this.target));
+        var angularVelocity = Math.calculateAngularVelocity(this.watcher.player, this.target);
         Integer[] safeSection;
 
         if (angularVelocity < ANGULAR_VELOCITY_OFFSET * (-1)) {

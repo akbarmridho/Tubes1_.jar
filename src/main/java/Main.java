@@ -47,6 +47,8 @@ public class Main {
         }, UUID.class);
 
         hubConnection.on("ReceiveGameState", GameWatcherManager.getWatcher()::reloadData, GameStateDto.class);
+        hubConnection.on("ReceivePlayerConsumed", () -> System.out.println("Player was consumed"));
+        hubConnection.on("ReceiveGameComplete", (data) -> System.out.println("Game was finished"), Object.class);
 
         hubConnection.on("Error", (Throwable::printStackTrace), Throwable.class);
         hubConnection.start().blockingAwait();
