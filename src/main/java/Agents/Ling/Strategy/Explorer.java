@@ -43,8 +43,12 @@ public class Explorer implements StrategyInterface {
                 // todo: tembak bot atau gas cloud terdekat
                 if (this.watcher.player.torpedoSalvoCount >= 5 && this.watcher.player.getSize() >= SHIP_SIZE_CRITICAL * 2) {
                     var closestEnemy = SearchEnemy.closestEnemy();
-                    System.out.println("Explorer firing torpedo");
-                    return Armory.fireTorpedo(closestEnemy);
+
+                    if (this.watcher.radar.clearToShoot(closestEnemy)) {
+                        return Armory.fireTorpedo(closestEnemy);
+                    }
+
+                    return act;
                 }
             }
         }

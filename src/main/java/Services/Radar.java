@@ -139,4 +139,43 @@ public class Radar {
                     collect(Collectors.toList()).get(0);
         }
     }
+
+    public boolean clearToShoot(GameObject target) {
+        var section = this.determineSection(target);
+        var range = this.determineRange(target);
+        var targetHeading = Math.getHeadingBetween(this.player, target);
+        List<GameObject> obstacles = new ArrayList<>();
+
+        if (range == 0) {
+            return true;
+        } else {
+            this.sections.get(section).short_range.gasClouds.forEach(gas -> {
+                if (java.lang.Math.abs(targetHeading - Math.getHeadingBetween(this.player, gas)) < 5) {
+                    obstacles.add(gas);
+                }
+            });
+
+            this.sections.get(section).short_range.asteroidFields.forEach(asteroid -> {
+                if (java.lang.Math.abs(targetHeading - Math.getHeadingBetween(this.player, asteroid)) < 5) {
+                    obstacles.add(asteroid);
+                }
+            });
+
+            if (range == 2) {
+                this.sections.get(section).medium_range.gasClouds.forEach(gas -> {
+                    if (java.lang.Math.abs(targetHeading - Math.getHeadingBetween(this.player, gas)) < 5) {
+                        obstacles.add(gas);
+                    }
+                });
+
+                this.sections.get(section).medium_range.asteroidFields.forEach(asteroid -> {
+                    if (java.lang.Math.abs(targetHeading - Math.getHeadingBetween(this.player, asteroid)) < 5) {
+                        obstacles.add(asteroid);
+                    }
+                });
+            }
+        }
+
+        return obstacles.size() == 0;
+    }
 }
