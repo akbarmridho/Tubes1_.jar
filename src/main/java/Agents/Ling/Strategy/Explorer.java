@@ -50,9 +50,12 @@ public class Explorer implements StrategyInterface {
                         return Armory.fireTorpedo(gas);
                     } else {
                         var closestEnemy = SearchEnemy.closestEnemy();
-                        System.out.println("Explorer firing torpedo");
-                        return Armory.fireTorpedo(closestEnemy);
+                        if (this.watcher.radar.clearToShoot(closestEnemy)) {
+                            return Armory.fireTorpedo(closestEnemy);
+                        }
+                        return act;
                     }
+
                 }
             }
 

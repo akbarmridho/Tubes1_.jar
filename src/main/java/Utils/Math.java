@@ -67,7 +67,7 @@ public class Math {
         return abs(targetHeading - player.currentHeading) <= 10;
     }
 
-    public static double calculateAngularVelocity(GameObject pivot, GameObject target) {
+    public static int calculateAngularVelocity(GameObject pivot, GameObject target) {
         // todo: benerin rumusnya
         var relativeHeading = getHeadingBetween(pivot, target) - target.currentHeading;
         var speedPerpendicular = java.lang.Math.sin(toRadians(relativeHeading)) * target.speed;
