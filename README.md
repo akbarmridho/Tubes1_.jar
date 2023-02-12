@@ -11,7 +11,7 @@
 * [Folders and Files Description](#folders-and-files-description)
 
 ## **Program Description**
-*Galaxio* is a *battle-royale* competition game of several spaceships. Every player will be representated by a spaceship with a goal to be the last survivor of the game. Bot used in the game will be constructed using *greedy algorithm*.
+*Galaxio* is a *battle-royale* competition game of several spaceships. Every player will be representated by a spaceship with a goal to be the last survivor of the game. Bot used in the game will be constructed using *greedy algorithm*. The spaceships (bots) used in the game are allowed to use various strategy to survive, including shooting torpedos to other ships, deploying shield and using wormhole to retreat, and colliding itself to other ships or food to increase its size. The bot inside this repository is developed using Java programming language.
 
 ## **Required Program**
 Here are the things you need to prepare to run the program: 
@@ -26,23 +26,70 @@ Here are the things you need to prepare to run the program:
  
 ## **How to Run The Program**
 
-1. Clone this repository <br>
-```sh
-$ git clone  https://github.com/akbarmridho/Tubes1_.jar.git
-```
+### Preparing the Program
+1. Make sure that the required programs have been installed <br>
+2. Download and extract the game *starter-pack* <br>
+3. Clone this repository <br>
+    Preferably inside the extracted folder <br>
+    ```sh
+    $ cd starter-pack/starter-bots
+    ```
+    ```sh
+    $ git clone 
+    https://github.com/akbarmridho/Tubes1_.jar.git
+    ```
 
+### Starting the Program
+Every code displayed in this instruction assuming that the user runs the program with the *starter-pack* folder as the current directory in the terminal.
+1. Configurate the used bot count in the game you want to start. To change the settings, change the bot count variable inside `appsettings.json` inside the *runner-publish* and *engine-publish* folders.
+2. Inside the starter-pack folder, open a new terminal and run `GameRunner.dll`
+    ```sh
+    $ cd runner-publish
+    $ dotnet GameRunner.dll
+    ```
+3. Inside the starter-pack folder, open a new terminal and run `Engine.dll`
+    ```sh
+    $ cd enginer-publish
+    $ dotnet Engine.dll
+    ```
+4. Inside the starter-pack folder, open a new terminal and run `logger-publish`
+    ```sh
+    $ cd logger-publish
+    $ dotnet Logger.dll
+    ```
+5. Open new terminals **as much as the bot count** in the settings. <br>
+    To run the reference bot, you can use the command:
+    ```sh
+    $ cd reference-bot-publish
+    $ dotnet ReferenceBot.dll
+    ``` 
+    To run the bot in this repository, try:
+    ```sh
+    # java -jar <path to the .jar file of this repo>
+    # if you follow the instructions above, the .jar file should be inside the starter-bots folder
+    $ java -jar starter-bots/Tubes1_.jar/target/JavaBot.jar
+    ```
+6. Extract the visualiser files inside the *visualiser* folder
+7. Open the extracted folder and run *Galaxio.exe*
 
 
 ## **Progress Report**
 
-| Point | Yes | No |
-|-----|-----|------|
-|The program is able to be compiled without any issues| &check; |   |
-|The program successfully starts and runs | &check;   |  |
-|The program is able to read user input and to automatically generate input itself | &check;  |  |
-|The program is able to display an output | &check;  |  |
-|Each solution given by the program equals to 24 | &check;  |  |
-|The program is able to save the solution(s) inside a text file| &check;  |  |
+| Strategy |Point | Yes | No |
+|--|---|-----|------|
+| Attacking | Torpedos Deployment           | &check; |  |
+|           | Closest Enemy Targeting       | &check; |  |
+|           | Angular Shooting Adjustment   | &check; |  |
+|           | Supernova Usage               |  |  |
+| Defending | Evading Torpedos              |  |  |
+|           | Deploying Shield              |  |  |
+|           | Runaway using Wormhole        |  |  |
+| Exploring | Shortest Food Path Finding    | &check; |  |
+|           | Small Gas Cloud Shooting      | &check; |  |
+|           | 2 Same Distance Food Decision |  |  |
+|           | Going Outside of the Map Prevention |  |  |
+| Others    | Radar                         | &check; |  |
+|           | Late Game Strategy            |  |  |
 
 
 ## **Authors and Workload Distribution** 
@@ -56,7 +103,7 @@ $ git clone  https://github.com/akbarmridho/Tubes1_.jar.git
 ## **Folders and Files Description**
     .
     ├─ .github                 
-    ├─ src                      # Contains every algorithm in constructing the bot
+    ├─ src                              # Contains every algorithm in constructing the bot
         └─ main
             └─ java
                 ├─ Actions
@@ -77,7 +124,7 @@ $ git clone  https://github.com/akbarmridho/Tubes1_.jar.git
                     ├─ Agent.java
                     └─ AgentManager.java
                 ├─ Enums
-                    ├─ ObjectTypes.java
+                    ├─ ObjectTypes.java   
                     └─ PlayerActions.java
                 ├─ Models
                     ├─ GameObject.java
@@ -95,19 +142,19 @@ $ git clone  https://github.com/akbarmridho/Tubes1_.jar.git
                 ├─ Utils
                     └─ Math.java
                 └─ Main.java
-    ├─ target                   # Contains compiled program 
+    ├─ target                           # Contains compiled program 
         ├─ target
-            ├─ classes
+            ├─ classes                  # Contains compiled classes files
                 └─ ...
             ├─ generated-sources
             ├─ libs
             ├─ maven-archiver
             ├─ maven-status
-            └─ JavaBot.jar
-    ├─ doc                      # Contains documentation files 
-    ├─ Dockerfile               
+            └─ JavaBot.jar              # Compiled program in .jar
+    ├─ doc                              # Contains documentation files 
+    ├─ Dockerfile  
     ├─ pom.xml                  
-    ├─ test.bat
+    ├─ test.bat                         # Used to support user when running the program
     └─ README.md
 
 
