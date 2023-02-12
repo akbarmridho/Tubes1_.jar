@@ -35,8 +35,7 @@ Here are the things you need to prepare to run the program:
     $ cd starter-pack/starter-bots
     ```
     ```sh
-    $ git clone 
-    https://github.com/akbarmridho/Tubes1_.jar.git
+    $ git clone https://github.com/akbarmridho/Tubes1_.jar.git
     ```
 
 ### Starting the Program
