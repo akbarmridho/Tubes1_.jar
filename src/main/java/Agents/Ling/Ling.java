@@ -3,12 +3,17 @@ package Agents.Ling;
 import Agents.Agent;
 import Agents.Ling.Strategy.Attacker;
 import Agents.Ling.Strategy.Explorer;
+import Agents.Ling.Strategy.Defender;
 import Models.PlayerAction;
+import Services.GameWatcher;
+import Services.GameWatcherManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.swing.plaf.synth.SynthStyle;
 
 public class Ling implements Agent {
     private final List<StrategyInterface> strategies;
@@ -21,6 +26,7 @@ public class Ling implements Agent {
         this.strategies = new ArrayList<>();
         this.strategies.add(new Attacker());
         this.strategies.add(new Explorer());
+        this.strategies.add(new Defender());
     }
 
     @Override
@@ -29,7 +35,9 @@ public class Ling implements Agent {
     }
 
     private Agent selectStrategy() {
-        var selectedStrategy = this.strategies.stream().sorted(Comparator.comparing(StrategyInterface::getPriorityLevel).reversed()).collect(Collectors.toList()).get(0);
+        var selectedStrategy = this.strategies.stream()
+                .sorted(Comparator.comparing(StrategyInterface::getPriorityLevel).reversed())
+                .collect(Collectors.toList()).get(0);
         var name = selectedStrategy.getClass().getSimpleName();
 
         if (this.currentStrategy == null) {
@@ -38,7 +46,9 @@ public class Ling implements Agent {
         } else if (this.currentStrategy.equals(name)) {
             this.counter++;
         } else {
-            System.out.format("Strategy %s was called %d times\n", this.currentStrategy, this.counter);
+            GameWatcher watcher = GameWatcherManager.getWatcher();
+            System.out.format("Strategy %s was called %d times from tick %d - %d\n", this.currentStrategy, this.counter,
+                    watcher.world.currentTick - this.counter - 1, watcher.world.currentTick - 1);
             this.currentStrategy = name;
             this.counter = 1;
         }

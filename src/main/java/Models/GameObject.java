@@ -47,6 +47,24 @@ public class GameObject {
         this.teleporterCount = teleporterCount;
     }
 
+    public static GameObject MockSizePositionHeading(int x, int y, int size, int heading, ObjectTypes objectType) {
+        Position position = new Position(x, y);
+        UUID mockID = new UUID(0, 0);
+
+        return new GameObject(
+                mockID,
+                size,
+                0,
+                heading,
+                position,
+                objectType,
+                0,
+                0,
+                0,
+                0,
+                0);
+    }
+
     public static GameObject FromStateList(UUID id, List<Integer> stateList) {
         Position position = new Position(stateList.get(4), stateList.get(5));
 
@@ -62,8 +80,7 @@ public class GameObject {
                     stateList.get(6),
                     0,
                     0,
-                    0
-            );
+                    0);
         }
 
         return new GameObject(
@@ -77,8 +94,7 @@ public class GameObject {
                 stateList.get(6),
                 stateList.get(8),
                 stateList.get(10),
-                stateList.get(9)
-        );
+                stateList.get(9));
     }
 
     public UUID getId() {
