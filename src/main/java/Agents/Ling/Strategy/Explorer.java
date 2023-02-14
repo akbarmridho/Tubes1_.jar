@@ -42,10 +42,11 @@ public class Explorer implements StrategyInterface {
                 act.setHeading(watcher.player.currentHeading);
             } else {
                 // todo: tembak bot atau gas cloud terdekat
-                if (this.watcher.player.torpedoSalvoCount >= 5 && this.watcher.player.getSize() >= SHIP_SIZE_CRITICAL * 2) {
+                if (this.watcher.player.torpedoSalvoCount >= 5
+                        && this.watcher.player.getSize() >= SHIP_SIZE_CRITICAL * 2) {
                     // Kalo ada gas cloud, tembak gas cloud
                     GameObject gas = this.watcher.radar.closestGasCloud();
-                    if ( gas != null){
+                    if (gas != null) {
                         System.out.println("Firing gas clouds");
                         return Armory.fireTorpedo(gas);
                     } else {
@@ -59,7 +60,6 @@ public class Explorer implements StrategyInterface {
                 }
             }
 
-
         }
 
         return act;
@@ -67,6 +67,7 @@ public class Explorer implements StrategyInterface {
 
     @Override
     public int getPriorityLevel() {
+        // System.out.println("[EXPLORE]");
         if (watcher.player.size <= SHIP_SIZE_CRITICAL) {
             return Priority.HIGH;
         } else if (watcher.player.size <= SHIP_SIZE_IDEAL) {

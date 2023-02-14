@@ -1,5 +1,6 @@
 import Agents.AgentManager;
 import Models.GameStateDto;
+import Services.DebugWriter;
 import Services.GameWatcherManager;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
@@ -34,7 +35,6 @@ public class Main {
         HubConnection hubConnection = HubConnectionBuilder.create(url)
                 .build();
 
-
         hubConnection.on("Disconnect", (id) -> {
             System.out.println("Disconnected:");
 
@@ -55,9 +55,11 @@ public class Main {
 
         Thread.sleep(1000);
         System.out.println("Registering with the runner...");
+        System.out.format("Running as %s...\n", botName);
         hubConnection.send("Register", token, botName);
+        // new DebugWriter(botName);
 
-        //This is a blocking call
+        // This is a blocking call
         hubConnection.start().subscribe(() -> {
             while (hubConnection.getConnectionState() == HubConnectionState.CONNECTED) {
                 Thread.sleep(20);

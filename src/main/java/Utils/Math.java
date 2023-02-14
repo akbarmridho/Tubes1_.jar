@@ -21,7 +21,13 @@ public class Math {
         return (direction + 360) % 360;
     }
 
-    public static int getIntercept(float projectileSpeed, int targetHeading, float targetSpeed, float xDis, float yDis) {
+    public static int headingDiff(int theta1, int theta2) {
+        int theta = abs(theta1 - theta2) % 360;
+        return theta > 180 ? 360 - theta : theta;
+    }
+
+    public static int getIntercept(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
+            float yDis) {
         var A = java.lang.Math.atan(-1 * yDis / xDis);
         var C = xDis * targetSpeed * java.lang.Math.cos(toRadians(targetHeading)) / projectileSpeed
                 - yDis * targetSpeed * java.lang.Math.sin(toRadians(targetHeading)) / projectileSpeed;
@@ -31,7 +37,8 @@ public class Math {
         return toDegrees(asin - A) % 360;
     }
 
-    public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis, float yDis) {
+    public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
+            float yDis) {
         // todo: sudut optimal untuk intercept
         int targetDeg = changeDegreesAnchor(targetHeading);
         var adjAngle = java.lang.Math.atan(xDis / yDis);
@@ -50,7 +57,8 @@ public class Math {
     }
 
     public static int changeDegreesAnchor(int deg) {
-        // Used to convert degrees used in North Anchor Basis to East Anchor Basis, vice versa.
+        // Used to convert degrees used in North Anchor Basis to East Anchor Basis, vice
+        // versa.
         return (450 - deg) % 360;
     }
 
