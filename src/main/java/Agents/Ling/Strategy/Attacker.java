@@ -15,9 +15,6 @@ import Utils.Math;
 import java.util.List;
 
 public class Attacker implements StrategyInterface {
-    private final int ANGULAR_VELOCITY_OFFSET = 15;
-
-    private final int SHIP_SAFE_SIZE = 50;
     private final GameWatcher watcher = GameWatcherManager.getWatcher();
     private GameObject target = null;
 
@@ -26,7 +23,10 @@ public class Attacker implements StrategyInterface {
         // cek jika memerlukan heading adjustment
         var adjustment = headingAdjustment();
 
-        if (this.watcher.player.torpedoSalvoCount >= 5 && this.watcher.player.getSize() >= SHIP_SAFE_SIZE) {
+        int SHIP_SAFE_SIZE = 50;
+        if (this.watcher.player.torpedoSalvoCount >= 5 &&
+                (this.watcher.player.getSize() >= SHIP_SAFE_SIZE ||
+                        (this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15))) {
             return Armory.fireTorpedo(this.target);
         }
 
@@ -44,7 +44,14 @@ public class Attacker implements StrategyInterface {
             }
         }
 
-        return null;
+        return mirrorTargetHeading();
+    }
+
+    private PlayerAction mirrorTargetHeading() {
+        PlayerAction act = new PlayerAction();
+        act.setAction(PlayerActions.FORWARD);
+        act.setHeading(this.target.currentHeading);
+        return act;
     }
 
     private PlayerAction headingAdjustment() {
@@ -81,6 +88,7 @@ public class Attacker implements StrategyInterface {
         var angularVelocity = Math.calculateAngularVelocity(this.watcher.player, this.target);
         Integer[] safeSection;
 
+        int ANGULAR_VELOCITY_OFFSET = 2;
         if (angularVelocity < ANGULAR_VELOCITY_OFFSET * (-1)) {
             safeSection = new Integer[]{(targetSection - 1) % radarSectionCount, (targetSection - 2) % radarSectionCount};
         } else if (angularVelocity > ANGULAR_VELOCITY_OFFSET) {
