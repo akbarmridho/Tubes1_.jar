@@ -14,6 +14,7 @@ Utils\Math.class
 Services\DebugWriter.class
 Agents\Paimon\Paimon.class
 Services\RadarUnitArea.class
+Agents\Ling\Strategy\Shield.class
 Main.class
 Enums\PlayerActions.class
 Agents\Ling\Strategy\Defender.class

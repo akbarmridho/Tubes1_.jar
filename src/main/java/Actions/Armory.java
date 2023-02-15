@@ -14,27 +14,31 @@ public class Armory {
     public static int TORPEDO_RADIUS_DETECTION = 500;
 
     public static int calculateTorpedoHeading(GameObject player, GameObject target) {
-        var angularVelocity = Math.calculateAngularVelocity(player, target);
-        var initialHeading = Math.getHeadingBetween(player, target);
-        var distance = Math.getDistanceBetween(player, target);
+        if (Math.getDistanceBetween(player, target) > 300){
+            var angularVelocity = Math.calculateAngularVelocity(player, target);
+            var initialHeading = Math.getHeadingBetween(player, target);
+            var distance = Math.getDistanceBetween(player, target);
 
-        int adjustment = 0;
+            int adjustment = 0;
 
-        if (angularVelocity >= 2) {
-            adjustment += 2;
-        } else if (angularVelocity <= -2) {
-            adjustment -= 2;
+            if (angularVelocity >= 2) {
+                adjustment += 2;
+            } else if (angularVelocity <= -2) {
+                adjustment -= 2;
+            }
+
+            if (distance > 500) {
+                adjustment *= 2;
+            }
+
+            if (adjustment != 0) {
+                System.out.println("Torpedo firing adjustment");
+            }
+            return initialHeading+adjustment;
+        } else {
+            return Math.getInterceptHeading(60, target.currentHeading, target.getSpeed(), 
+                            target.position.x - player.position.x, target.position.y - player.position.y);
         }
-
-        if (distance > 500) {
-            adjustment *= 2;
-        }
-
-        if (adjustment != 0) {
-            System.out.println("Torpedo firing adjustment");
-        }
-
-        return initialHeading + adjustment;
     }
 
     public static PlayerAction fireTorpedo(GameObject target) {

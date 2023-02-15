@@ -40,13 +40,24 @@ public class Math {
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
                                           float yDis) {
         // todo: sudut optimal untuk intercept
-        int targetDeg = changeDegreesAnchor(targetHeading);
-        var adjAngle = java.lang.Math.atan(xDis / yDis);
-        var targetAspect = targetSpeed * java.lang.Math.sin(toRadians(targetDeg)) -
-                (yDis / xDis * targetSpeed * java.lang.Math.cos(toRadians(targetDeg)));
-        var resDeg = java.lang.Math.acos(java.lang.Math.sin(adjAngle) * targetAspect / projectileSpeed) - adjAngle;
-        return changeDegreesAnchor((int) resDeg);
+        var tgtDeg = toRadians(targetHeading);
+        var adjAngle = java.lang.Math.atan(yDis/xDis);
+        var tgtAspect = targetSpeed * (java.lang.Math.sin(tgtDeg) - (yDis/xDis * java.lang.Math.cos(tgtDeg)));
+        var gamma = java.lang.Math.asin (-1* java.lang.Math.cos(adjAngle) * tgtAspect / projectileSpeed);
+        var res = toDegrees(adjAngle - gamma);
+        // Check if it is possible to intercept with the current angle
+        var verificator = yDis/ (projectileSpeed * java.lang.Math.sin(toRadians(res)) - 
+                            targetSpeed * java.lang.Math.sin(toRadians(targetHeading)));
+
+        System.out.println("Intercepting Torpedos Deployed");
+        if ( verificator < 0){
+            return toDegrees(adjAngle + gamma - java.lang.Math.PI);
+        } else {
+            return res;
+        }
+
     }
+
 
     public static int toDegrees(double v) {
         return (int) (v * (180 / java.lang.Math.PI));
@@ -54,12 +65,6 @@ public class Math {
 
     public static double toRadians(int d) {
         return d * (java.lang.Math.PI / 180);
-    }
-
-    public static int changeDegreesAnchor(int deg) {
-        // Used to convert degrees used in North Anchor Basis to East Anchor Basis, vice
-        // versa.
-        return (450 - deg) % 360;
     }
 
     public static boolean potentialIntercept(GameObject target, GameObject projectile) {
