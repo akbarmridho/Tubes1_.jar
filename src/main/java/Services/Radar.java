@@ -118,20 +118,20 @@ public class Radar {
         this.sections.forEach(section -> {
             section.short_range.foods.
                     forEach(food -> {
-                        if (Math.potentialInterceptStatic(food, this.player)) {
+                        if (Math.potentialInterceptFood(this.player, food)) {
                             potential.add(food);
                         }
                     });
 
             section.medium_range.foods.
                     forEach(food -> {
-                        if (Math.potentialInterceptStatic(food, this.player)) {
+                        if (Math.potentialInterceptFood(this.player, food)) {
                             potential.add(food);
                         }
                     });
         });
 
-        if (potential.size() == 0) { 
+        if (potential.size() == 0) {
             this.heading = null;
         } else {
             this.heading = potential.stream().
@@ -140,24 +140,25 @@ public class Radar {
         }
     }
 
-    public GameObject closestGasCloud(){
+    public GameObject closestGasCloud() {
         List<GameObject> pot_gas = new ArrayList<GameObject>();
-        this.sections.forEach(section->{
+        this.sections.forEach(section -> {
             section.short_range.gasClouds.
-                forEach(gasCloud -> {
-                    if (gasCloud.size < 20){
-                        pot_gas.add(gasCloud);
-                    }
-                });
+                    forEach(gasCloud -> {
+                        if (gasCloud.size < 20) {
+                            pot_gas.add(gasCloud);
+                        }
+                    });
         });
-        if (pot_gas.size() == 0){
+        if (pot_gas.size() == 0) {
             return null;
         } else {
             return pot_gas.stream().
-                sorted(Comparator.comparing(gasCloud -> Math.getDistanceBetween(player, gasCloud))).
-                collect(Collectors.toList()).get(0);
+                    sorted(Comparator.comparing(gasCloud -> Math.getDistanceBetween(player, gasCloud))).
+                    collect(Collectors.toList()).get(0);
         }
-    }   
+    }
+
     public boolean clearToShoot(GameObject target) {
         var section = this.determineSection(target);
         var range = this.determineRange(target);

@@ -96,6 +96,7 @@ public class GameWatcher {
                 break;
             case SUPER_FOOD:
             case FOOD:
+            case SUPERNOVA_PICKUP:
                 this.foods.add(object);
                 break;
             case GAS_CLOUD:

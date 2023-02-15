@@ -7,6 +7,7 @@ import Utils.Math;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchEnemy {
@@ -24,6 +25,20 @@ public class SearchEnemy {
                 collect(Collectors.toList());
 
         return sortedEnemies.get(0);
+    }
+
+    public static List<GameObject> enemyAboveRange(int radius) {
+        GameWatcher watcher = GameWatcherManager.getWatcher();
+        GameObject player = watcher.player;
+
+        if (watcher.enemies.size() == 0) {
+            return null;
+        }
+
+        return watcher.enemies.
+                stream().
+                filter(enemy -> Math.getDistanceBetween(player, enemy) >= radius).
+                collect(Collectors.toList());
     }
 
     public static ArrayList<GameObject> filterSmallerEnemy() {
