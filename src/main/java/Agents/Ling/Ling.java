@@ -2,8 +2,9 @@ package Agents.Ling;
 
 import Agents.Agent;
 import Agents.Ling.Strategy.Attacker;
-import Agents.Ling.Strategy.Explorer;
 import Agents.Ling.Strategy.Defender;
+import Agents.Ling.Strategy.Explorer;
+import Agents.Ling.Strategy.Shield;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.swing.plaf.synth.SynthStyle;
 
 public class Ling implements Agent {
     private final List<StrategyInterface> strategies;
@@ -27,6 +26,7 @@ public class Ling implements Agent {
         this.strategies.add(new Attacker());
         this.strategies.add(new Explorer());
         this.strategies.add(new Defender());
+        this.strategies.add(new Shield());
     }
 
     @Override

@@ -39,7 +39,9 @@ public class Attacker implements StrategyInterface {
         }
 
         if (this.watcher.player.torpedoSalvoCount > 0) {
-            return Armory.fireTorpedo(this.target);
+            if (this.watcher.radar.clearToShoot(this.target)) {
+                return Armory.fireTorpedo(this.target);
+            }
         }
 
         return null;
@@ -128,7 +130,7 @@ public class Attacker implements StrategyInterface {
         if (target == null) {
             this.target = null;
             return Priority.NONE;
-        } else if (target.getSize() < watcher.player.getSize()) {
+        } else if (target.getSize() < watcher.player.getSize() || watcher.enemies.size() == 1) {
             this.target = target;
             return Priority.NORMAL;
         }

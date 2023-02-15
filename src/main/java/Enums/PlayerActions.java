@@ -16,7 +16,7 @@ public enum PlayerActions {
 
     TELEPORT(9),
 
-    ACTIVATE_SHIELD(10);
+    ACTIVATESHIELD(10);
 
     public final Integer value;
 

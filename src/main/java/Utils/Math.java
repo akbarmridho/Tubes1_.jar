@@ -27,7 +27,7 @@ public class Math {
     }
 
     public static int getIntercept(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-            float yDis) {
+                                   float yDis) {
         var A = java.lang.Math.atan(-1 * yDis / xDis);
         var C = xDis * targetSpeed * java.lang.Math.cos(toRadians(targetHeading)) / projectileSpeed
                 - yDis * targetSpeed * java.lang.Math.sin(toRadians(targetHeading)) / projectileSpeed;
@@ -38,7 +38,7 @@ public class Math {
     }
 
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-            float yDis) {
+                                          float yDis) {
         // todo: sudut optimal untuk intercept
         int targetDeg = changeDegreesAnchor(targetHeading);
         var adjAngle = java.lang.Math.atan(xDis / yDis);
@@ -78,7 +78,7 @@ public class Math {
     public static int calculateAngularVelocity(GameObject pivot, GameObject target) {
         // todo: benerin rumusnya
         var relativeHeading = getHeadingBetween(pivot, target) - target.currentHeading;
-        var speedPerpendicular = java.lang.Math.sin(toRadians(relativeHeading)) * target.speed;
+        var speedPerpendicular = java.lang.Math.cos(toRadians(relativeHeading)) * target.speed;
         var distance = getDistanceBetween(pivot, target);
 
         return toDegrees(speedPerpendicular / distance);
