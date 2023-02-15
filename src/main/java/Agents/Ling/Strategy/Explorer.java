@@ -51,7 +51,8 @@ public class Explorer implements StrategyInterface {
                         return Armory.fireTorpedo(gas);
                     } else {
                         var closestEnemy = SearchEnemy.closestEnemy();
-                        return Armory.interceptTargetFood(closestEnemy, this.watcher.player);
+                        return Armory.fireTorpedo(closestEnemy);
+//                        return Armory.interceptTargetFood(closestEnemy, this.watcher.player);
                     }
                 }
             }

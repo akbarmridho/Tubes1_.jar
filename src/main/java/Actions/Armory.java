@@ -21,9 +21,9 @@ public class Armory {
         int adjustment = 0;
 
         if (angularVelocity >= 2) {
-            adjustment += 3;
+            adjustment += 5;
         } else if (angularVelocity <= -2) {
-            adjustment -= 3;
+            adjustment -= 5;
         }
 
         if (distance > 500) {
@@ -53,10 +53,10 @@ public class Armory {
         }
 
         if (java.lang.Math.abs(target.currentHeading - Math.getHeadingBetween(target, closestFoodToEnemy)) < 10) {
-            var enemyHeading = Math.getHeadingBetween(player, target);
+//            var enemyHeading = Math.getHeadingBetween(player, target);
             var enemyFoodheading = Math.getHeadingBetween(player, closestFoodToEnemy);
 
-            return fireTorpedoWithHeading((enemyHeading + enemyFoodheading) / 2);
+            return fireTorpedoWithHeading(enemyFoodheading);
         }
 
         return fireTorpedo(target);

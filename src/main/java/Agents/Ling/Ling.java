@@ -2,6 +2,7 @@ package Agents.Ling;
 
 import Agents.Agent;
 import Agents.Ling.Strategy.*;
+import Enums.PlayerActions;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
@@ -29,7 +30,24 @@ public class Ling implements Agent {
 
     @Override
     public PlayerAction computeNextAction() {
-        return this.selectStrategy().computeNextAction();
+        GameWatcher watcher = GameWatcherManager.getWatcher();
+
+        try {
+            var action = this.selectStrategy().computeNextAction();
+
+            if (action.getAction() == PlayerActions.FORWARD) {
+                var headingDiff = Math.abs(watcher.player.currentHeading - action.getHeading());
+                if (headingDiff > 150 && headingDiff < 210) {
+                    System.out.println("Sudden turn was detected");
+                }
+            }
+
+            return action;
+        } catch (Error e) {
+            System.out.println("Exception detected");
+        }
+
+        return null;
     }
 
     private Agent selectStrategy() {
@@ -39,14 +57,15 @@ public class Ling implements Agent {
         var name = selectedStrategy.getClass().getSimpleName();
 
         if (this.currentStrategy == null) {
+            System.out.format("Start using strategy %s\n", name);
             this.currentStrategy = name;
             this.counter = 1;
         } else if (this.currentStrategy.equals(name)) {
             this.counter++;
         } else {
             GameWatcher watcher = GameWatcherManager.getWatcher();
-            System.out.format("Strategy %s was called %d times from tick %d - %d\n", this.currentStrategy, this.counter,
-                    watcher.world.currentTick - this.counter - 1, watcher.world.currentTick - 1);
+            System.out.format("Strategy %s was called %d times from tick %d - %d. Begin using %s\n", this.currentStrategy, this.counter,
+                    watcher.world.currentTick - this.counter - 1, watcher.world.currentTick - 1, name);
             this.currentStrategy = name;
             this.counter = 1;
         }

@@ -75,6 +75,13 @@ public class Math {
         return abs(targetHeading - projectile.currentHeading) <= tolerance;
     }
 
+    public static boolean potentialInterceptFood(GameObject player, GameObject food) {
+        var distance = getDistanceBetween(player, food);
+        double angleTolerance = toDegrees(java.lang.Math.asin(player.size / distance));
+
+        return java.lang.Math.abs(player.currentHeading - getHeadingBetween(player, food)) < angleTolerance;
+    }
+
     public static boolean potentialInterceptStatic(GameObject staticObject, GameObject player) {
         int targetHeading = getHeadingBetween(player, staticObject);
 
@@ -92,6 +99,6 @@ public class Math {
 
     public static boolean isOutOfBound(GameObject player, Integer worldRadius) {
         var position = player.getPosition();
-        return java.lang.Math.sqrt(position.x * position.x + position.y * position.y) + player.size < worldRadius;
+        return java.lang.Math.sqrt(position.x * position.x + position.y * position.y) + player.size > worldRadius;
     }
 }
