@@ -21,6 +21,12 @@ public class Math {
         return (direction + 360) % 360;
     }
 
+    public static int getCenterHeading(GameObject player) {
+        var direction = toDegrees(java.lang.Math.atan2(-player.getPosition().y,
+                -player.getPosition().x));
+        return (direction + 360) % 360;
+    }
+
     public static int headingDiff(int theta1, int theta2) {
         int theta = abs(theta1 - theta2) % 360;
         return theta > 180 ? 360 - theta : theta;
@@ -82,5 +88,10 @@ public class Math {
         var distance = getDistanceBetween(pivot, target);
 
         return toDegrees(speedPerpendicular / distance);
+    }
+
+    public static boolean isOutOfBound(GameObject player, Integer worldRadius) {
+        var position = player.getPosition();
+        return java.lang.Math.sqrt(position.x * position.x + position.y * position.y) + player.size < worldRadius;
     }
 }

@@ -11,7 +11,11 @@ import java.util.stream.Collectors;
 public class SearchFood {
     public static GameObject closestFood() {
         GameWatcher watcher = GameWatcherManager.getWatcher();
-        GameObject player = watcher.player;
+        return closestFoodRelativeTo(watcher.player);
+    }
+
+    public static GameObject closestFoodRelativeTo(GameObject target) {
+        GameWatcher watcher = GameWatcherManager.getWatcher();
 
         if (watcher.foods.size() == 0) {
             return null;
@@ -19,7 +23,7 @@ public class SearchFood {
 
         var sortedFood = watcher.foods.
                 stream().
-                sorted(Comparator.comparing(food -> Math.getDistanceBetween(player, food))).
+                sorted(Comparator.comparing(food -> Math.getDistanceBetween(target, food))).
                 collect(Collectors.toList());
 
         return sortedFood.get(0);

@@ -1,10 +1,7 @@
 package Agents.Ling;
 
 import Agents.Agent;
-import Agents.Ling.Strategy.Attacker;
-import Agents.Ling.Strategy.Defender;
-import Agents.Ling.Strategy.Explorer;
-import Agents.Ling.Strategy.Shield;
+import Agents.Ling.Strategy.*;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
@@ -27,6 +24,7 @@ public class Ling implements Agent {
         this.strategies.add(new Explorer());
         this.strategies.add(new Defender());
         this.strategies.add(new Shield());
+        this.strategies.add(new ToCenter());
     }
 
     @Override

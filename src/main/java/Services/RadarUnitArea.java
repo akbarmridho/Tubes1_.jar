@@ -1,5 +1,6 @@
 package Services;
 
+import Enums.ObjectTypes;
 import Models.GameObject;
 import Utils.Math;
 
@@ -66,7 +67,20 @@ public class RadarUnitArea {
     }
 
     public double measureFoodAdvantage() {
-        return this.foods.size();
+        return this.foods.stream().mapToInt(element -> {
+            int val;
+            if (element.gameObjectType == ObjectTypes.FOOD) {
+                val = 1;
+            } else if (element.gameObjectType == ObjectTypes.SUPER_FOOD) {
+                val = 2;
+            } else if (element.gameObjectType == ObjectTypes.SUPERNOVA_PICKUP) {
+                val = 6;
+            } else {
+                val = 0;
+            }
+
+            return val;
+        }).sum();
     }
 
     public double measureThreatLevel() {

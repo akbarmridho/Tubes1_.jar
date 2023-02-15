@@ -6,11 +6,11 @@ import Actions.SearchFood;
 import Agents.Ling.Priority;
 import Agents.Ling.StrategyInterface;
 import Enums.PlayerActions;
+import Models.GameObject;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
 import Utils.Math;
-import Models.GameObject;
 
 public class Explorer implements StrategyInterface {
     public static final int SHIP_SIZE_CRITICAL = 20;
@@ -25,8 +25,9 @@ public class Explorer implements StrategyInterface {
         if (food == null) {
             food = SearchFood.closestFood();
             if (food == null) {
-                // act.setAction(PlayerActions.STOP);
-                return null;
+                act.setHeading(Math.getCenterHeading(this.watcher.player));
+                act.setAction(PlayerActions.FORWARD);
+                return act;
             }
         }
 
@@ -41,7 +42,6 @@ public class Explorer implements StrategyInterface {
             if (headingDiff > 150 && headingDiff < 210) {
                 act.setHeading(watcher.player.currentHeading);
             } else {
-                // todo: tembak bot atau gas cloud terdekat
                 if (this.watcher.player.torpedoSalvoCount >= 5
                         && this.watcher.player.getSize() >= SHIP_SIZE_CRITICAL * 2) {
                     // Kalo ada gas cloud, tembak gas cloud
@@ -51,12 +51,8 @@ public class Explorer implements StrategyInterface {
                         return Armory.fireTorpedo(gas);
                     } else {
                         var closestEnemy = SearchEnemy.closestEnemy();
-                        if (this.watcher.radar.clearToShoot(closestEnemy)) {
-                            return Armory.fireTorpedo(closestEnemy);
-                        }
-                        return act;
+                        return Armory.interceptTargetFood(closestEnemy, this.watcher.player);
                     }
-
                 }
             }
 
@@ -67,7 +63,6 @@ public class Explorer implements StrategyInterface {
 
     @Override
     public int getPriorityLevel() {
-        // System.out.println("[EXPLORE]");
         if (watcher.player.size <= SHIP_SIZE_CRITICAL) {
             return Priority.HIGH;
         } else if (watcher.player.size <= SHIP_SIZE_IDEAL) {
