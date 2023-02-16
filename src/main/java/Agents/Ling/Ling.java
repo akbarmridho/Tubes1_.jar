@@ -26,6 +26,7 @@ public class Ling implements Agent {
         this.strategies.add(new Defender());
         this.strategies.add(new Shield());
         this.strategies.add(new ToCenter());
+        this.strategies.add(new Sniper());
     }
 
     @Override
@@ -33,7 +34,7 @@ public class Ling implements Agent {
         GameWatcher watcher = GameWatcherManager.getWatcher();
 
         try {
-            var action = this.selectStrategy().computeNextAction();
+            var action = this.selectStrategy(false).computeNextAction();
 
             if (action.getAction() == PlayerActions.FORWARD) {
                 var headingDiff = Math.abs(watcher.player.currentHeading - action.getHeading());
@@ -42,18 +43,23 @@ public class Ling implements Agent {
                 }
             }
 
+            if (action == null) {
+                return this.selectStrategy(true).computeNextAction();
+            }
+
             return action;
         } catch (Error e) {
             System.out.println("Exception detected");
         }
 
-        return null;
+        return this.selectStrategy(true).computeNextAction();
     }
 
-    private Agent selectStrategy() {
+    private Agent selectStrategy(boolean next) {
+        int idx = next ? 1 : 0;
         var selectedStrategy = this.strategies.stream()
                 .sorted(Comparator.comparing(StrategyInterface::getPriorityLevel).reversed())
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList()).get(idx);
         var name = selectedStrategy.getClass().getSimpleName();
 
         if (this.currentStrategy == null) {

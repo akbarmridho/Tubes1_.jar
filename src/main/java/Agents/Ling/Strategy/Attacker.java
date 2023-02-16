@@ -20,13 +20,18 @@ public class Attacker implements StrategyInterface {
 
     @Override
     public PlayerAction computeNextAction() {
+        if (this.target == null) {
+            return null;
+        }
+
         // cek jika memerlukan heading adjustment
-        var adjustment = headingAdjustment();
+        var adjustment = headingAdjustment(false);
 
         int SHIP_SAFE_SIZE = 50;
         if (this.watcher.player.torpedoSalvoCount >= 5 &&
-                (this.watcher.player.getSize() >= SHIP_SAFE_SIZE ||
-                        (this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15))) {
+                (this.watcher.player.size > SHIP_SAFE_SIZE ||
+                        this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15)
+        ) {
             return Armory.fireTorpedo(this.target);
         }
 
@@ -34,34 +39,44 @@ public class Attacker implements StrategyInterface {
             return adjustment;
         }
 
-        if (this.target == null) {
-            return null;
-        }
-
         if (this.watcher.player.torpedoSalvoCount > 0) {
-            if (this.watcher.radar.clearToShoot(this.target)) {
+            if ((this.watcher.radar.clearToShoot(this.target) && Math.getTrueDistanceBetween(this.watcher.player, this.target) < 700) ||
+                    (this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15)) {
                 return Armory.fireTorpedo(this.target);
             }
         }
 
-        return mirrorTargetHeading();
+        var newAdjustment = headingAdjustment(true);
+
+        if (this.watcher.foods.size() <= 3 || newAdjustment == null) {
+            return oppositeWay();
+        }
+
+        return newAdjustment;
     }
 
-    private PlayerAction mirrorTargetHeading() {
+    private PlayerAction oppositeWay() {
         PlayerAction act = new PlayerAction();
         act.setAction(PlayerActions.FORWARD);
-        act.setHeading(this.target.currentHeading);
+        act.setHeading(Math.getModulus(this.target.currentHeading + 180, 360));
         return act;
     }
 
-    private PlayerAction headingAdjustment() {
+    private PlayerAction headingAdjustment(boolean forceNew) {
         if (this.target == null) {
             return null;
         }
 
         var targetSection = watcher.radar.determineSection(this.target);
-        var currentHeading = watcher.radar.heading;
+        GameObject currentHeading;
+
+        if (forceNew) {
+            currentHeading = null;
+        } else {
+            currentHeading = watcher.radar.heading;
+        }
         var radarSectionCount = watcher.radar.sectionCount;
+        boolean enemyLarger = watcher.player.size - 10 < this.target.size;
 
         // fokus mengejar tetapi tetap jaga jarak
         var angularVelocity = Math.calculateAngularVelocity(this.watcher.player, this.target);
@@ -69,35 +84,70 @@ public class Attacker implements StrategyInterface {
         var headingDiff = java.lang.Math.abs(target.currentHeading - this.watcher.player.currentHeading);
 
         int ANGULAR_VELOCITY_OFFSET = 2;
-        if (angularVelocity < ANGULAR_VELOCITY_OFFSET * (-1)) {
-            safeSection = new Integer[]{
-                    targetSection,
-                    (targetSection - 1) % radarSectionCount,
-                    (targetSection - 2) % radarSectionCount};
-        } else if (angularVelocity > ANGULAR_VELOCITY_OFFSET) {
-            safeSection = new Integer[]{
-                    targetSection,
-                    (targetSection + 1) % radarSectionCount,
-                    (targetSection + 2) % radarSectionCount};
-        } else {
-            if (headingDiff > 150 && headingDiff < 210) {
-                safeSection = new Integer[]{targetSection + radarSectionCount / 2,
-                        (targetSection - 1) % radarSectionCount,
-                        (targetSection + 1) % radarSectionCount,
-                };
-            } else if (headingDiff < 30) {
-                safeSection = new Integer[]{targetSection,
-                        (targetSection - 1) % radarSectionCount,
-                        (targetSection + 1) % radarSectionCount,
-                };
-            } else {
+
+        if (enemyLarger) {
+            if (angularVelocity < ANGULAR_VELOCITY_OFFSET * (-1)) {
                 safeSection = new Integer[]{
+                        (targetSection - 3) % radarSectionCount,
+                        (targetSection - 2) % radarSectionCount};
+            } else if (angularVelocity > ANGULAR_VELOCITY_OFFSET) {
+                safeSection = new Integer[]{
+                        (targetSection + 3) % radarSectionCount,
+                        (targetSection + 2) % radarSectionCount};
+            } else {
+                if (headingDiff > 150 && headingDiff < 210) {
+                    safeSection = new Integer[]{targetSection + radarSectionCount / 2,
+                            (targetSection - 2) % radarSectionCount,
+                            (targetSection - 3) % radarSectionCount,
+                            (targetSection + 2) % radarSectionCount,
+                            (targetSection + 3) % radarSectionCount
+                    };
+                } else if (headingDiff < 30) {
+                    safeSection = new Integer[]{targetSection,
+                            (targetSection - 1) % radarSectionCount,
+                            (targetSection + 1) % radarSectionCount,
+                            (targetSection - 2) % radarSectionCount,
+                            (targetSection + 2) % radarSectionCount,
+                    };
+                } else {
+                    safeSection = new Integer[]{
+                            (targetSection - 1) % radarSectionCount,
+                            (targetSection + 1) % radarSectionCount,
+                            (targetSection - 2) % radarSectionCount,
+                            (targetSection + 2) % radarSectionCount,
+                    };
+                }
+            }
+        } else {
+            if (angularVelocity < ANGULAR_VELOCITY_OFFSET * (-1)) {
+                safeSection = new Integer[]{
+                        targetSection,
                         (targetSection - 1) % radarSectionCount,
+                        (targetSection - 2) % radarSectionCount};
+            } else if (angularVelocity > ANGULAR_VELOCITY_OFFSET) {
+                safeSection = new Integer[]{
+                        targetSection,
                         (targetSection + 1) % radarSectionCount,
-                };
+                        (targetSection + 2) % radarSectionCount};
+            } else {
+                if (headingDiff > 150 && headingDiff < 210) {
+                    safeSection = new Integer[]{targetSection + radarSectionCount / 2,
+                            (targetSection - 1) % radarSectionCount,
+                            (targetSection + 1) % radarSectionCount,
+                    };
+                } else if (headingDiff < 30) {
+                    safeSection = new Integer[]{targetSection,
+                            (targetSection - 1) % radarSectionCount,
+                            (targetSection + 1) % radarSectionCount,
+                    };
+                } else {
+                    safeSection = new Integer[]{
+                            (targetSection - 1) % radarSectionCount,
+                            (targetSection + 1) % radarSectionCount,
+                    };
+                }
             }
         }
-
 
         if (currentHeading != null) {
             var currentHeadingSection = this.watcher.radar.determineSection(currentHeading);
@@ -138,9 +188,7 @@ public class Attacker implements StrategyInterface {
         if (target == null) {
             this.target = null;
             return Priority.NONE;
-        } else if (
-                (target.getSize() < watcher.player.getSize() && Math.getDistanceBetween(this.watcher.player, target) < 500) ||
-                        watcher.enemies.size() == 1) {
+        } else if (Math.getTrueDistanceBetween(this.watcher.player, target) < 600 || this.watcher.enemies.size() == 1) {
             this.target = target;
             return Priority.NORMAL;
         }

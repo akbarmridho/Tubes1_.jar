@@ -15,6 +15,10 @@ public class Math {
         return java.lang.Math.sqrt(triangleX * triangleX + triangleY * triangleY);
     }
 
+    public static double getTrueDistanceBetween(GameObject object1, GameObject object2) {
+        return getDistanceBetween(object1, object2) - object1.size - object2.size;
+    }
+
     public static int getHeadingBetween(GameObject thisObject, GameObject otherObject) {
         var direction = toDegrees(java.lang.Math.atan2(otherObject.getPosition().y - thisObject.getPosition().y,
                 otherObject.getPosition().x - thisObject.getPosition().x));
@@ -30,17 +34,6 @@ public class Math {
     public static int headingDiff(int theta1, int theta2) {
         int theta = abs(theta1 - theta2) % 360;
         return theta > 180 ? 360 - theta : theta;
-    }
-
-    public static int getIntercept(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-            float yDis) {
-        var A = java.lang.Math.atan(-1 * yDis / xDis);
-        var C = xDis * targetSpeed * java.lang.Math.cos(toRadians(targetHeading)) / projectileSpeed
-                - yDis * targetSpeed * java.lang.Math.sin(toRadians(targetHeading)) / projectileSpeed;
-
-        var asin = java.lang.Math.asin(C / (java.lang.Math.sqrt(xDis * xDis + yDis * yDis)));
-
-        return toDegrees(asin - A) % 360;
     }
 
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
@@ -84,12 +77,6 @@ public class Math {
         double angleTolerance = toDegrees(java.lang.Math.asin(player.size / distance));
 
         return java.lang.Math.abs(player.currentHeading - getHeadingBetween(player, food)) < angleTolerance;
-    }
-
-    public static boolean potentialInterceptStatic(GameObject staticObject, GameObject player) {
-        int targetHeading = getHeadingBetween(player, staticObject);
-
-        return abs(targetHeading - player.currentHeading) <= 10;
     }
 
     public static int calculateAngularVelocity(GameObject pivot, GameObject target) {
