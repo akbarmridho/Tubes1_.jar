@@ -65,7 +65,12 @@ public class Main {
                 var agent = AgentManager.getDefaultAgent();
 
                 if (hubConnection.getConnectionState() == HubConnectionState.CONNECTED) {
-                    hubConnection.send("SendPlayerAction", agent.computeNextAction());
+                    try {
+                        hubConnection.send("SendPlayerAction", agent.computeNextAction());
+                    } catch (Error e) {
+                        
+                    }
+
                 }
 
                 shouldAct = false;
