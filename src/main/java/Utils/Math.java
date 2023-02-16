@@ -37,7 +37,7 @@ public class Math {
     }
 
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-            float yDis) {
+                                          float yDis) {
         // todo: sudut optimal untuk intercept
         var tgtDeg = toRadians(targetHeading);
         var adjAngle = java.lang.Math.atan(yDis / xDis);
@@ -54,7 +54,6 @@ public class Math {
         } else {
             return res;
         }
-
     }
 
     public static int toDegrees(double v) {
@@ -93,8 +92,39 @@ public class Math {
         return java.lang.Math.sqrt(position.x * position.x + position.y * position.y) + player.size > worldRadius;
     }
 
+    public static double trueDistanceRaw(double x1, double y1, double x2, double y2, double r1, double r2) {
+        var deltax = x1 - x2;
+        var deltay = y1 - y2;
+        return java.lang.Math.sqrt(deltax * deltax + deltay * deltay) - r1 - r2;
+    }
+
+    public static double tickTillCollision(GameObject player1, GameObject player2) {
+        double result = 0;
+        double unit = 0.2;
+        int limit = 5;
+        double xPos1 = player1.position.x;
+        double yPos1 = player1.position.y;
+        double vx1 = player1.speed * java.lang.Math.cos(toRadians(player1.currentHeading));
+        double vy1 = player1.speed * java.lang.Math.sin(toRadians(player1.currentHeading));
+
+        double xPos2 = player2.position.x;
+        double yPos2 = player2.position.y;
+        double vx2 = player2.speed * java.lang.Math.cos(toRadians(player2.currentHeading));
+        double vy2 = player2.speed * java.lang.Math.sin(toRadians(player2.currentHeading));
+
+        while (trueDistanceRaw(xPos1, yPos1, xPos2, yPos2, player1.size, player2.size) >= 0 && result < limit) {
+            xPos1 += vx1 * unit;
+            yPos1 += vy1 * unit;
+            xPos2 += vx2 * unit;
+            yPos2 += vy2 * unit;
+            result += unit;
+        }
+
+        return result;
+    }
+
     public static boolean projectileWillHit(GameObject projectile, GameObject object, int addedDegrees,
-            int minDistance) {
+                                            int minDistance) {
         int dangerHeading = toDegrees(
                 java.lang.Math.abs(java.lang.Math.asin(object.size / getDistanceBetween(projectile, object))))
                 + addedDegrees;

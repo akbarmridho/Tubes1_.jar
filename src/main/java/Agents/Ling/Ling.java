@@ -27,6 +27,7 @@ public class Ling implements Agent {
         this.strategies.add(new Shield());
         this.strategies.add(new ToCenter());
         this.strategies.add(new Sniper());
+        this.strategies.add(new EvadeCollision());
     }
 
     @Override
