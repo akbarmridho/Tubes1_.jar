@@ -5,7 +5,6 @@ import Services.GameWatcher;
 import Services.GameWatcherManager;
 import Utils.Math;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,31 +38,5 @@ public class SearchEnemy {
                 stream().
                 filter(enemy -> Math.getDistanceBetween(player, enemy) >= radius).
                 collect(Collectors.toList());
-    }
-
-    public static ArrayList<GameObject> filterSmallerEnemy() {
-        GameWatcher watcher = GameWatcherManager.getWatcher();
-
-        ArrayList<GameObject> result = new ArrayList<>();
-
-        for (var enemy : watcher.enemies) {
-            if (watcher.player.size > enemy.size) {
-                result.add(enemy);
-            }
-        }
-
-        return result;
-    }
-
-    public static GameObject smallerEnemyWithin(double radius) {
-        var candidate = filterSmallerEnemy();
-
-        if (candidate.isEmpty()) {
-            return null;
-        }
-
-        return candidate.stream().
-                sorted(Comparator.comparing(enemy -> Math.getDistanceBetween(GameWatcherManager.getWatcher().player, enemy))).
-                collect(Collectors.toList()).get(0);
     }
 }

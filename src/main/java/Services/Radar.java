@@ -86,12 +86,6 @@ public class Radar {
         return 2;
     }
 
-    public List<RadarSection> getMostAdvantageousSection() {
-        return this.sections.stream().
-                sorted(Comparator.comparing(RadarSection::measureOverallAdvantage).reversed()).
-                collect(Collectors.toList());
-    }
-
     public List<RadarUnitArea> getMostAdvantageousArea() {
         return this.sections.stream().
                 sorted(Comparator.comparing(RadarSection::measureShortRangeAdvantage).reversed()).
@@ -114,7 +108,7 @@ public class Radar {
 
     public void predictShipHeading() {
 //        var section = this.sections.get(this.determineSection(this.player));
-        List<GameObject> potential = new ArrayList<GameObject>();
+        List<GameObject> potential = new ArrayList<>();
         this.sections.forEach(section -> {
             section.short_range.foods.
                     forEach(food -> {
@@ -141,15 +135,13 @@ public class Radar {
     }
 
     public GameObject closestGasCloud() {
-        List<GameObject> pot_gas = new ArrayList<GameObject>();
-        this.sections.forEach(section -> {
-            section.short_range.gasClouds.
-                    forEach(gasCloud -> {
-                        if (gasCloud.size < 20) {
-                            pot_gas.add(gasCloud);
-                        }
-                    });
-        });
+        List<GameObject> pot_gas = new ArrayList<>();
+        this.sections.forEach(section -> section.short_range.gasClouds.
+                forEach(gasCloud -> {
+                    if (gasCloud.size < 20) {
+                        pot_gas.add(gasCloud);
+                    }
+                }));
         if (pot_gas.size() == 0) {
             return null;
         } else {

@@ -1,12 +1,9 @@
 import Agents.AgentManager;
 import Models.GameStateDto;
-import Services.DebugWriter;
 import Services.GameWatcherManager;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import com.microsoft.signalr.HubConnectionState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
@@ -14,7 +11,6 @@ import static Services.GameWatcher.shouldAct;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Logger logger = LoggerFactory.getLogger(Main.class);
         String token = System.getenv("Token");
         token = (token != null) ? token : UUID.randomUUID().toString();
 
@@ -37,8 +33,7 @@ public class Main {
 
         hubConnection.on("Disconnect", (id) -> {
             System.out.println("Disconnected:");
-
-            hubConnection.stop();
+            hubConnection.stop().blockingAwait();
         }, UUID.class);
 
         hubConnection.on("Registered", (id) -> {
@@ -77,6 +72,6 @@ public class Main {
             }
         });
 
-        hubConnection.stop();
+        hubConnection.stop().blockingAwait();
     }
 }

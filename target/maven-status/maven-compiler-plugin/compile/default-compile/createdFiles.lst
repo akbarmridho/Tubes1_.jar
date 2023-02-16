@@ -7,6 +7,7 @@ Actions\Armory.class
 Agents\Mahamatra\State\EngageAttack\MahamatraChaser.class
 Agents\Ling\Strategy\Attacker.class
 Enums\ObjectTypes.class
+Agents\Ling\Strategy\Supernova.class
 Models\PlayerAction.class
 Models\GameObject.class
 Services\GameWatcher$1.class
@@ -17,6 +18,7 @@ Services\RadarUnitArea.class
 Agents\Ling\Strategy\Shield.class
 Main.class
 Enums\PlayerActions.class
+Agents\Ling\Strategy\ToCenter.class
 Agents\Ling\Strategy\Defender.class
 Services\RadarSection.class
 Agents\Mahamatra\Mahamatra.class
