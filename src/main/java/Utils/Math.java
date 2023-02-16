@@ -33,7 +33,7 @@ public class Math {
     }
 
     public static int getIntercept(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-                                   float yDis) {
+            float yDis) {
         var A = java.lang.Math.atan(-1 * yDis / xDis);
         var C = xDis * targetSpeed * java.lang.Math.cos(toRadians(targetHeading)) / projectileSpeed
                 - yDis * targetSpeed * java.lang.Math.sin(toRadians(targetHeading)) / projectileSpeed;
@@ -44,26 +44,25 @@ public class Math {
     }
 
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-                                          float yDis) {
+            float yDis) {
         // todo: sudut optimal untuk intercept
         var tgtDeg = toRadians(targetHeading);
-        var adjAngle = java.lang.Math.atan(yDis/xDis);
-        var tgtAspect = targetSpeed * (java.lang.Math.sin(tgtDeg) - (yDis/xDis * java.lang.Math.cos(tgtDeg)));
-        var gamma = java.lang.Math.asin (-1* java.lang.Math.cos(adjAngle) * tgtAspect / projectileSpeed);
+        var adjAngle = java.lang.Math.atan(yDis / xDis);
+        var tgtAspect = targetSpeed * (java.lang.Math.sin(tgtDeg) - (yDis / xDis * java.lang.Math.cos(tgtDeg)));
+        var gamma = java.lang.Math.asin(-1 * java.lang.Math.cos(adjAngle) * tgtAspect / projectileSpeed);
         var res = toDegrees(adjAngle - gamma);
         // Check if it is possible to intercept with the current angle
-        var verificator = yDis/ (projectileSpeed * java.lang.Math.sin(toRadians(res)) - 
-                            targetSpeed * java.lang.Math.sin(toRadians(targetHeading)));
+        var verificator = yDis / (projectileSpeed * java.lang.Math.sin(toRadians(res)) -
+                targetSpeed * java.lang.Math.sin(toRadians(targetHeading)));
 
         System.out.println("Intercepting Torpedos Deployed");
-        if ( verificator < 0){
+        if (verificator < 0) {
             return toDegrees(adjAngle + gamma - java.lang.Math.PI);
         } else {
             return res;
         }
 
     }
-
 
     public static int toDegrees(double v) {
         return (int) (v * (180 / java.lang.Math.PI));
@@ -105,5 +104,14 @@ public class Math {
     public static boolean isOutOfBound(GameObject player, Integer worldRadius) {
         var position = player.getPosition();
         return java.lang.Math.sqrt(position.x * position.x + position.y * position.y) + player.size > worldRadius;
+    }
+
+    public static boolean projectileWillHit(GameObject projectile, GameObject object, int addedDegrees,
+            int minDistance) {
+        int dangerHeading = toDegrees(
+                java.lang.Math.abs(java.lang.Math.asin(object.size / getDistanceBetween(projectile, object))))
+                + addedDegrees;
+        return (getDistanceBetween(projectile, object) < minDistance)
+                && headingDiff(getHeadingBetween(projectile, object), projectile.currentHeading) < dangerHeading;
     }
 }

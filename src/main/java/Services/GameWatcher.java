@@ -20,6 +20,7 @@ public class GameWatcher {
     public List<GameObject> torpedoes;
     public List<GameObject> others;
     public World world;
+    public int supernovaBlastRadius;
     private UUID id;
 
     public GameWatcher() {
@@ -47,6 +48,7 @@ public class GameWatcher {
 
     public void reloadData(GameStateDto data) {
         this.world = data.getWorld();
+        this.supernovaBlastRadius = world.radius / 4;
         this.clearObjects();
 
         for (Map.Entry<String, List<Integer>> objectEntry : data.getPlayerObjects().entrySet()) {
@@ -114,4 +116,3 @@ public class GameWatcher {
         }
     }
 }
-

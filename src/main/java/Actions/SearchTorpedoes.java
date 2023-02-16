@@ -17,21 +17,15 @@ import Enums.ObjectTypes;
 
 public class SearchTorpedoes {
     public static final int TORPEDO_DANGER_DIST = 300;
+    public static final int TORPEDO_ADDED_BEARINGS = 8;
     public static final int TORPEDO_EXTREMELY_CLOSE = 50;
 
     public static List<GameObject> filterDangerousTorpedoes(GameObject player, List<GameObject> gameObjects) {
-        List<GameObject> torpedoes = gameObjects.stream()
+        return gameObjects.stream()
                 .filter(gameObject -> gameObject.gameObjectType == ObjectTypes.TORPEDO_SLAVO)
+                .filter(torpedo -> Utils.Math.projectileWillHit(torpedo, player, TORPEDO_ADDED_BEARINGS,
+                        TORPEDO_DANGER_DIST))
                 .collect(Collectors.toList());
-
-        return torpedoes.stream().filter(torpedo -> {
-            int dangerHeading = Utils.Math
-                    .toDegrees(Math.abs(Math.asin(player.size / Utils.Math.getDistanceBetween(torpedo, player)))) + 8;
-            boolean isDangerous = (Utils.Math.getDistanceBetween(torpedo, player) < TORPEDO_DANGER_DIST)
-                    && Utils.Math.headingDiff(Utils.Math.getHeadingBetween(torpedo, player),
-                            torpedo.currentHeading) < dangerHeading;
-            return isDangerous;
-        }).collect(Collectors.toList());
     }
 
     public static int safestHeading() {
