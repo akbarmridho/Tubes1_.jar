@@ -73,16 +73,6 @@ public class GameWatcher {
         this.radar.predictShipHeading();
     }
 
-    public GameObject getEnemyById(UUID id) {
-        for (var enemy : this.enemies) {
-            if (enemy.getId().equals(id)) {
-                return enemy;
-            }
-        }
-
-        return null;
-    }
-
     private void handleObject(Map.Entry<String, List<Integer>> objectEntry) {
         GameObject object = GameObject.FromStateList(UUID.fromString(objectEntry.getKey()), objectEntry.getValue());
 

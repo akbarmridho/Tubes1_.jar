@@ -15,6 +15,10 @@ public class Math {
         return java.lang.Math.sqrt(triangleX * triangleX + triangleY * triangleY);
     }
 
+    public static double getTrueDistanceBetween(GameObject object1, GameObject object2) {
+        return getDistanceBetween(object1, object2) - object1.size - object2.size;
+    }
+
     public static int getHeadingBetween(GameObject thisObject, GameObject otherObject) {
         var direction = toDegrees(java.lang.Math.atan2(otherObject.getPosition().y - thisObject.getPosition().y,
                 otherObject.getPosition().x - thisObject.getPosition().x));
@@ -32,31 +36,21 @@ public class Math {
         return theta > 180 ? 360 - theta : theta;
     }
 
-    public static int getIntercept(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-                                   float yDis) {
-        var A = java.lang.Math.atan(-1 * yDis / xDis);
-        var C = xDis * targetSpeed * java.lang.Math.cos(toRadians(targetHeading)) / projectileSpeed
-                - yDis * targetSpeed * java.lang.Math.sin(toRadians(targetHeading)) / projectileSpeed;
-
-        var asin = java.lang.Math.asin(C / (java.lang.Math.sqrt(xDis * xDis + yDis * yDis)));
-
-        return toDegrees(asin - A) % 360;
-    }
 
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
                                           float yDis) {
         // todo: sudut optimal untuk intercept
         var tgtDeg = toRadians(targetHeading);
-        var adjAngle = java.lang.Math.atan(yDis/xDis);
-        var tgtAspect = targetSpeed * (java.lang.Math.sin(tgtDeg) - (yDis/xDis * java.lang.Math.cos(tgtDeg)));
-        var gamma = java.lang.Math.asin (-1* java.lang.Math.cos(adjAngle) * tgtAspect / projectileSpeed);
+        var adjAngle = java.lang.Math.atan(yDis / xDis);
+        var tgtAspect = targetSpeed * (java.lang.Math.sin(tgtDeg) - (yDis / xDis * java.lang.Math.cos(tgtDeg)));
+        var gamma = java.lang.Math.asin(-1 * java.lang.Math.cos(adjAngle) * tgtAspect / projectileSpeed);
         var res = toDegrees(adjAngle - gamma);
         // Check if it is possible to intercept with the current angle
-        var verificator = yDis/ (projectileSpeed * java.lang.Math.sin(toRadians(res)) - 
-                            targetSpeed * java.lang.Math.sin(toRadians(targetHeading)));
+        var verificator = yDis / (projectileSpeed * java.lang.Math.sin(toRadians(res)) -
+                targetSpeed * java.lang.Math.sin(toRadians(targetHeading)));
 
         System.out.println("Intercepting Torpedos Deployed");
-        if ( verificator < 0){
+        if (verificator < 0) {
             return toDegrees(adjAngle + gamma - java.lang.Math.PI);
         } else {
             return res;
@@ -85,12 +79,6 @@ public class Math {
         double angleTolerance = toDegrees(java.lang.Math.asin(player.size / distance));
 
         return java.lang.Math.abs(player.currentHeading - getHeadingBetween(player, food)) < angleTolerance;
-    }
-
-    public static boolean potentialInterceptStatic(GameObject staticObject, GameObject player) {
-        int targetHeading = getHeadingBetween(player, staticObject);
-
-        return abs(targetHeading - player.currentHeading) <= 10;
     }
 
     public static int calculateAngularVelocity(GameObject pivot, GameObject target) {

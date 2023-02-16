@@ -66,10 +66,4 @@ public class RadarSection {
     public double measureShortRangeAdvantage() {
         return this.short_range.measureOverallAdvantage();
     }
-
-    public double measureOverallAdvantage() {
-        return this.short_range.measureOverallAdvantage() +
-                this.medium_range.measureOverallAdvantage() * 0.5 +
-                this.long_range.measureOverallAdvantage() * 0.2;
-    }
 }

@@ -20,13 +20,18 @@ public class Attacker implements StrategyInterface {
 
     @Override
     public PlayerAction computeNextAction() {
+        if (this.target == null) {
+            return null;
+        }
+
         // cek jika memerlukan heading adjustment
-        var adjustment = headingAdjustment();
+        var adjustment = headingAdjustment(false);
 
         int SHIP_SAFE_SIZE = 50;
         if (this.watcher.player.torpedoSalvoCount >= 5 &&
-                (this.watcher.player.getSize() >= SHIP_SAFE_SIZE ||
-                        (this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15))) {
+                (this.watcher.player.size > SHIP_SAFE_SIZE ||
+                        this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15)
+        ) {
             return Armory.fireTorpedo(this.target);
         }
 
@@ -34,17 +39,20 @@ public class Attacker implements StrategyInterface {
             return adjustment;
         }
 
-        if (this.target == null) {
-            return null;
-        }
-
         if (this.watcher.player.torpedoSalvoCount > 0) {
-            if (this.watcher.radar.clearToShoot(this.target)) {
+            if ((this.watcher.radar.clearToShoot(this.target) && Math.getTrueDistanceBetween(this.watcher.player, this.target) < 700) ||
+                    (this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15)) {
                 return Armory.fireTorpedo(this.target);
             }
         }
 
-        return mirrorTargetHeading();
+        var newAdjustment = headingAdjustment(true);
+
+        if (this.watcher.foods.size() <= 3 || newAdjustment == null) {
+            return mirrorTargetHeading();
+        }
+
+        return newAdjustment;
     }
 
     private PlayerAction mirrorTargetHeading() {
@@ -54,13 +62,19 @@ public class Attacker implements StrategyInterface {
         return act;
     }
 
-    private PlayerAction headingAdjustment() {
+    private PlayerAction headingAdjustment(boolean forceNew) {
         if (this.target == null) {
             return null;
         }
 
         var targetSection = watcher.radar.determineSection(this.target);
-        var currentHeading = watcher.radar.heading;
+        GameObject currentHeading;
+
+        if (forceNew) {
+            currentHeading = null;
+        } else {
+            currentHeading = watcher.radar.heading;
+        }
         var radarSectionCount = watcher.radar.sectionCount;
 
         // fokus mengejar tetapi tetap jaga jarak
@@ -138,9 +152,7 @@ public class Attacker implements StrategyInterface {
         if (target == null) {
             this.target = null;
             return Priority.NONE;
-        } else if (
-                (target.getSize() < watcher.player.getSize() && Math.getDistanceBetween(this.watcher.player, target) < 500) ||
-                        watcher.enemies.size() == 1) {
+        } else if (Math.getTrueDistanceBetween(this.watcher.player, target) < 700 || this.watcher.enemies.size() == 1) {
             this.target = target;
             return Priority.NORMAL;
         }
