@@ -79,16 +79,16 @@ Every code displayed in this instruction assuming that the user runs the program
 | Attacking | Torpedos Deployment           | &check; |  |
 |           | Closest Enemy Targeting       | &check; |  |
 |           | Angular Shooting Adjustment   | &check; |  |
-|           | Supernova Usage               |  |  |
-| Defending | Evading Torpedos              |  |  |
-|           | Deploying Shield              |  |  |
-|           | Runaway using Wormhole        |  |  |
+|           | Supernova Usage               |  | &check; |
+| Defending | Evading Torpedos              | &check; |  |
+|           | Deploying Shield              | &check; |  |
+|           | Runaway using Wormhole        |  | &check; |
 | Exploring | Shortest Food Path Finding    | &check; |  |
 |           | Small Gas Cloud Shooting      | &check; |  |
-|           | 2 Same Distance Food Decision |  |  |
-|           | Going Outside of the Map Prevention |  |  |
+|           | 2 Same Distance Food Decision |  | &check; |
+|           | Going Outside of the Map Prevention | &check; |  |
 | Others    | Radar                         | &check; |  |
-|           | Late Game Strategy            |  |  |
+|           | Late Game Strategy            |  | &check; |
 
 
 ## **Authors and Workload Distribution** 
@@ -108,18 +108,20 @@ Every code displayed in this instruction assuming that the user runs the program
                 ├─ Actions
                     ├─ Armory.java
                     ├─ SearchEnemy.java
-                    └─ SearchFood.java
+                    ├─ SearchFood.java
+                    └─ SearchTorpedoes.java
                 ├─ Agents
                     ├─ Ling                             # Used Bot
                         ├─ Strategy
                             ├─ Attacker.java
                             ├─ Defender.java
-                            └─ Explorer.java
+                            ├─ Explorer.java
+                            ├─ Shield.java
+                            ├─ Sniper.java
+                            └─ ToCenter.java
                         ├─ Ling.java
                         ├─ Priority.java
                         └─ StrategyInterface.java
-                    ├─ Mahamatra                        # Not Used
-                    ├─ Paimon                           # Not Used
                     ├─ Agent.java
                     └─ AgentManager.java
                 ├─ Enums
@@ -133,6 +135,7 @@ Every code displayed in this instruction assuming that the user runs the program
                     ├─ Position.java
                     └─ World.java
                 ├─ Services
+                    ├─ DebugWriter.java
                     ├─ GameWatcher.java
                     ├─ GameWatcherManager.java
                     ├─ Radar.java
@@ -146,9 +149,13 @@ Every code displayed in this instruction assuming that the user runs the program
             ├─ classes                  # Contains compiled classes files
                 └─ ...
             ├─ generated-sources
+                └─ ...
             ├─ libs
+                └─ ...
             ├─ maven-archiver
+                └─ ...
             ├─ maven-status
+                └─ ...
             └─ JavaBot.jar              # Compiled program in .jar
     ├─ doc                              # Contains documentation files 
     ├─ Dockerfile  
