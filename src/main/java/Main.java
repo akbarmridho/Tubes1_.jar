@@ -33,7 +33,7 @@ public class Main {
 
         hubConnection.on("Disconnect", (id) -> {
             System.out.println("Disconnected:");
-            hubConnection.stop().blockingAwait();
+            hubConnection.stop();
         }, UUID.class);
 
         hubConnection.on("Registered", (id) -> {

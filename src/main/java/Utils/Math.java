@@ -15,6 +15,10 @@ public class Math {
         return java.lang.Math.sqrt(triangleX * triangleX + triangleY * triangleY);
     }
 
+    public static double getTrueDistanceBetween(GameObject object1, GameObject object2) {
+        return getDistanceBetween(object1, object2) - object1.size - object2.size;
+    }
+
     public static int getHeadingBetween(GameObject thisObject, GameObject otherObject) {
         var direction = toDegrees(java.lang.Math.atan2(otherObject.getPosition().y - thisObject.getPosition().y,
                 otherObject.getPosition().x - thisObject.getPosition().x));

@@ -13,8 +13,8 @@ import Services.GameWatcherManager;
 import Utils.Math;
 
 public class Explorer implements StrategyInterface {
-    public static final int SHIP_SIZE_CRITICAL = 20;
-    public static final int SHIP_SIZE_IDEAL = 50;
+    public static final int SHIP_SIZE_CRITICAL = 30;
+    public static final int SHIP_SIZE_IDEAL = 100;
     private final GameWatcher watcher = GameWatcherManager.getWatcher();
 
     @Override
@@ -64,9 +64,22 @@ public class Explorer implements StrategyInterface {
 
     @Override
     public int getPriorityLevel() {
+        if (this.watcher.foods.size() == 0) {
+            return Priority.NONE;
+        }
+
+        var averageEnemySize = this.watcher.enemies.stream().mapToDouble(enemy -> enemy.size).average();
+        double idealShipSize;
+
+        if (averageEnemySize.isEmpty()) {
+            idealShipSize = SHIP_SIZE_IDEAL;
+        } else {
+            idealShipSize = java.lang.Math.max(averageEnemySize.getAsDouble(), SHIP_SIZE_IDEAL);
+        }
+
         if (watcher.player.size <= SHIP_SIZE_CRITICAL) {
             return Priority.HIGH;
-        } else if (watcher.player.size <= SHIP_SIZE_IDEAL) {
+        } else if (watcher.player.size <= idealShipSize) {
             return Priority.NORMAL;
         } else {
             return Priority.LOW;

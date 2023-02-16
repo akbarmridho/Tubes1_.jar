@@ -26,6 +26,21 @@ public class SearchEnemy {
         return sortedEnemies.get(0);
     }
 
+    public static GameObject largestEnemy() {
+        GameWatcher watcher = GameWatcherManager.getWatcher();
+
+        if (watcher.enemies.size() == 0) {
+            return null;
+        }
+
+        var sortedEnemies = watcher.enemies.
+                stream().
+                sorted(Comparator.comparing(enemy -> enemy.size * -1)).
+                collect(Collectors.toList());
+
+        return sortedEnemies.get(0);
+    }
+
     public static List<GameObject> enemyAboveRange(int radius) {
         GameWatcher watcher = GameWatcherManager.getWatcher();
         GameObject player = watcher.player;
