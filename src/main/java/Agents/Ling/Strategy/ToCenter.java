@@ -21,7 +21,7 @@ public class ToCenter implements StrategyInterface {
 
     @Override
     public int getPriorityLevel() {
-        if (Math.isOutOfBound(this.watcher.player, this.watcher.world.radius)) {
+        if (Math.isOutOfBound(this.watcher.player, this.watcher.world.radius - 10)) {
             return Priority.EMERGENCY;
         }
         return Priority.NONE;

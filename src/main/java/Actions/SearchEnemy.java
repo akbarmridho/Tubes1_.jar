@@ -20,7 +20,7 @@ public class SearchEnemy {
 
         var sortedEnemies = watcher.enemies.
                 stream().
-                sorted(Comparator.comparing(enemy -> Math.getDistanceBetween(player, enemy))).
+                sorted(Comparator.comparing(enemy -> Math.getTrueDistanceBetween(player, enemy))).
                 collect(Collectors.toList());
 
         return sortedEnemies.get(0);

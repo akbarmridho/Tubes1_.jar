@@ -36,9 +36,8 @@ public class Math {
         return theta > 180 ? 360 - theta : theta;
     }
 
-
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-                                          float yDis) {
+            float yDis) {
         // todo: sudut optimal untuk intercept
         var tgtDeg = toRadians(targetHeading);
         var adjAngle = java.lang.Math.atan(yDis / xDis);
@@ -57,7 +56,6 @@ public class Math {
         }
 
     }
-
 
     public static int toDegrees(double v) {
         return (int) (v * (180 / java.lang.Math.PI));
@@ -93,5 +91,14 @@ public class Math {
     public static boolean isOutOfBound(GameObject player, Integer worldRadius) {
         var position = player.getPosition();
         return java.lang.Math.sqrt(position.x * position.x + position.y * position.y) + player.size > worldRadius;
+    }
+
+    public static boolean projectileWillHit(GameObject projectile, GameObject object, int addedDegrees,
+            int minDistance) {
+        int dangerHeading = toDegrees(
+                java.lang.Math.abs(java.lang.Math.asin(object.size / getDistanceBetween(projectile, object))))
+                + addedDegrees;
+        return (getDistanceBetween(projectile, object) < minDistance)
+                && headingDiff(getHeadingBetween(projectile, object), projectile.currentHeading) < dangerHeading;
     }
 }

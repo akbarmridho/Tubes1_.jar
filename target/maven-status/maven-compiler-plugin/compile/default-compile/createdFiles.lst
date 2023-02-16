@@ -22,6 +22,7 @@ Actions\SearchFood.class
 Models\World.class
 Agents\Ling\Ling.class
 Agents\AgentNames.class
+Agents\Ling\Strategy\EvadeCollision.class
 Services\GameWatcher.class
 Agents\Ling\Strategy\Explorer.class
 Services\Radar.class
