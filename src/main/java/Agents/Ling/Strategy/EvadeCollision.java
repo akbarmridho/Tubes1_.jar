@@ -27,9 +27,7 @@ public class EvadeCollision implements StrategyInterface {
         var headingBetween = Math.getHeadingBetween(this.target, this.watcher.player);
         var headingDiff = targetHeading - headingBetween;
 
-        if ((headingDiff >= 0 && headingDiff <= 180) ||
-                (headingDiff >= -360 && headingDiff <= -180)
-        ) {
+        if (headingDiff >= -180 && headingDiff <= 180) {
             // starboard side
             action.setHeading(Math.getModulus(watcher.player.currentHeading - 90, 360));
         } else {
@@ -55,7 +53,7 @@ public class EvadeCollision implements StrategyInterface {
 
         double tick = Math.tickTillCollision(target, this.watcher.player);
 
-        if (tick <= 2.5) {
+        if (tick <= 2.5 && target.size > watcher.player.size) {
             this.target = target;
             return Priority.EMERGENCY;
         }
