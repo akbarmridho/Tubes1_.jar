@@ -1,3 +1,40 @@
+<<<<<<< HEAD
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Services\Radar.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Services\DebugWriter.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Priority.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Models\GameStateDto.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Ling.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\Sniper.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Agent.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Enums\ObjectTypes.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\StrategyInterface.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Models\PlayerAction.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Actions\SearchTorpedoes.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Services\GameWatcherManager.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Models\GameObject.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\EvadeCollision.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Enums\PlayerActions.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\EscapeGas.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Main.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Models\World.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Services\GameWatcher.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\Shield.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Services\RadarUnitArea.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Models\GameState.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Utils\Math.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Models\Position.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\ToCenter.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\Attacker.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\Explorer.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Actions\SearchSupernova.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\Defender.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Services\RadarSection.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Actions\SearchFood.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Actions\Armory.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\AgentManager.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Actions\SearchEnemy.java
+C:\Folder Kuliah\Sems 4\Stima\Game Tubes\starter-pack\starter-bots\AkbarBot\src\main\java\Agents\Ling\Strategy\Supernova.java
+=======
 D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src\main\java\Models\PlayerAction.java
 D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src\main\java\Models\World.java
 D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src\main\java\Models\GameState.java
@@ -34,3 +71,4 @@ D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src
 D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src\main\java\Agents\Ling\Strategy\EscapeGas.java
 D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src\main\java\Actions\SearchSupernova.java
 D:\ITB Files\Stima\Tubes-1\starter-pack\starter-pack\bot-sandbox\Tubes1_.jar\src\main\java\Services\RadarUnitArea.java
+>>>>>>> 7f03b9bced3a4621e49e51765bb020a9178b939c
