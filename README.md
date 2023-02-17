@@ -80,7 +80,8 @@ Every code displayed in this instruction assuming that the user runs the program
 |           | Closest Enemy Targeting       | &check; |  |
 |           | Angular Shooting Adjustment   | &check; |  |
 |           | Supernova Usage               |  | &check; |
-| Defending | Evading Torpedos              | &check; |  |
+| Defending | Evading Torpedos and Teleporter | &check; |  |
+|           | Evading Supernova             | &check; |  |
 |           | Deploying Shield              | &check; |  |
 |           | Runaway using Wormhole        |  | &check; |
 | Exploring | Shortest Food Path Finding    | &check; |  |
@@ -109,6 +110,7 @@ Every code displayed in this instruction assuming that the user runs the program
                     ├─ Armory.java
                     ├─ SearchEnemy.java
                     ├─ SearchFood.java
+                    ├─ SearchSupernova.java
                     └─ SearchTorpedoes.java
                 ├─ Agents
                     ├─ Ling                             # Used Bot
@@ -116,8 +118,11 @@ Every code displayed in this instruction assuming that the user runs the program
                             ├─ Attacker.java
                             ├─ Defender.java
                             ├─ Explorer.java
+                            ├─ EscapeGas.java
+                            ├─ EvadeCollision.java
                             ├─ Shield.java
                             ├─ Sniper.java
+                            ├─ Supernova.java
                             └─ ToCenter.java
                         ├─ Ling.java
                         ├─ Priority.java

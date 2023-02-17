@@ -57,7 +57,7 @@ public class Math {
     }
 
     public static int toDegrees(double v) {
-        return (int) (v * (180 / java.lang.Math.PI));
+        return  (int) java.lang.Math.round(v * (180 / java.lang.Math.PI));
     }
 
     public static double toRadians(int d) {

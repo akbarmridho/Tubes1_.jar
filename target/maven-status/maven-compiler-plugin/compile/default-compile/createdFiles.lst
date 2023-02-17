@@ -4,6 +4,7 @@ Agents\Ling\Priority.class
 Actions\Armory.class
 Agents\Ling\Strategy\Attacker.class
 Enums\ObjectTypes.class
+Actions\SearchSupernova.class
 Agents\Ling\Strategy\Supernova.class
 Models\PlayerAction.class
 Models\GameObject.class
@@ -28,6 +29,7 @@ Agents\Ling\Strategy\Explorer.class
 Services\Radar.class
 Agents\Ling\StrategyInterface.class
 Models\GameState.class
+Agents\Ling\Strategy\EscapeGas.class
 Services\GameWatcherManager.class
 Models\GameStateDto.class
 Agents\AgentManager.class
