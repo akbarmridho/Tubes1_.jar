@@ -6,6 +6,7 @@ import Enums.PlayerActions;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
+import Utils.Math;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +29,7 @@ public class Ling implements Agent {
         this.strategies.add(new ToCenter());
         this.strategies.add(new Sniper());
         this.strategies.add(new EvadeCollision());
+        this.strategies.add(new EscapeGas());
     }
 
     @Override
@@ -38,8 +40,8 @@ public class Ling implements Agent {
             var action = this.selectStrategy(false).computeNextAction();
 
             if (action.getAction() == PlayerActions.FORWARD) {
-                var headingDiff = Math.abs(watcher.player.currentHeading - action.getHeading());
-                if (headingDiff > 150 && headingDiff < 210) {
+                var headingDiff = Math.getModulus(watcher.player.currentHeading - action.getHeading(), 360);
+                if (headingDiff >= 180 && headingDiff <= 200) {
                     System.out.println("Sudden turn was detected");
                 }
             }

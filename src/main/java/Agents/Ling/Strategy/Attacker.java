@@ -36,7 +36,7 @@ public class Attacker implements StrategyInterface {
         }
 
         if (adjustment != null) {
-            return adjustment;
+            return clearSuddenTurn(adjustment);
         }
 
         if (this.watcher.player.torpedoSalvoCount > 0) {
@@ -52,7 +52,22 @@ public class Attacker implements StrategyInterface {
             return oppositeWay();
         }
 
-        return newAdjustment;
+        return clearSuddenTurn(newAdjustment);
+    }
+
+    private PlayerAction clearSuddenTurn(PlayerAction action) {
+        var headingDiff = Math.getModulus(this.watcher.player.currentHeading - action.heading, 360);
+
+        if (headingDiff >= 160 && headingDiff <= 200) {
+            System.out.println("Adjustment called");
+            if (headingDiff <= 180) {
+                action.setHeading(Math.getModulus(action.getHeading() - 30, 360));
+            } else {
+                action.setHeading(Math.getModulus(action.getHeading() + 30, 360));
+            }
+        }
+
+        return action;
     }
 
     private PlayerAction oppositeWay() {
