@@ -29,7 +29,7 @@ Agents\Ling\Strategy\Explorer.class
 Services\Radar.class
 Agents\Ling\StrategyInterface.class
 Models\GameState.class
-Actions\SearchGasCloud.class
+Agents\Ling\Strategy\EscapeGas.class
 Services\GameWatcherManager.class
 Models\GameStateDto.class
 Actions\SearchTeleporter.class

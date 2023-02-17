@@ -2,10 +2,8 @@ package Agents.Ling.Strategy;
 
 import Actions.SearchTorpedoes;
 
-import java.util.Comparator;
 import java.util.List;
 
-import Actions.SearchGasCloud;
 import Actions.SearchSupernova;
 import Actions.SearchTeleporter;
 import Agents.Ling.Priority;
@@ -15,14 +13,12 @@ import Models.GameObject;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
-import Utils.Math;
 
 public class Defender implements StrategyInterface {
     private final GameWatcher watcher = GameWatcherManager.getWatcher();
     private List<GameObject> dangerousTorpedoes = null;
     private List<GameObject> dangerousTeleporters = null;
     private GameObject supernovaBomb = null;
-    private GameObject dangerousGasCloud = null;
 
     @Override
     public PlayerAction computeNextAction() {
@@ -31,8 +27,6 @@ public class Defender implements StrategyInterface {
 
         if (supernovaBomb != null) {
             act.setHeading(SearchSupernova.safestHeading());
-        } else if (dangerousGasCloud != null) {
-            act.setHeading(SearchGasCloud.safestHeading());
         } else if (!dangerousTeleporters.isEmpty()) {
             act.setHeading(SearchTeleporter.safestHeading());
         } else {
@@ -48,9 +42,8 @@ public class Defender implements StrategyInterface {
         this.supernovaBomb = SearchSupernova.getDangerousSupernova(watcher.player, watcher.others);
         this.dangerousTeleporters = SearchTeleporter.filterDangerousTeleporters(watcher.player, watcher.others,
                 watcher.enemies);
-        this.dangerousGasCloud = SearchGasCloud.getImmediatelyDangerousGasCloud(watcher.player, watcher.gasClouds);
 
-        if (supernovaBomb != null || dangerousGasCloud != null) {
+        if (supernovaBomb != null) {
             return Priority.EMERGENCY;
         }
         if (!dangerousTorpedoes.isEmpty() || !dangerousTeleporters.isEmpty()) {
