@@ -92,12 +92,12 @@ Every code displayed in this instruction assuming that the user runs the program
 |           | Late Game Strategy            |  | &check; |
 
 
-## **Authors and Workload Distribution** 
-| Name | ID | Workload |
-|-----|----|----------|
-| Akbar Maulana Ridho | 13521093 | Attacking Algorithm|
-| Juan Christopher Santoso | 13521116 | Exploring Algorithm |
-| Rinaldy Adin | 13521134 | Defending Algorithm |
+## **Authors** 
+| Name | ID |
+|-----|----|
+| Akbar Maulana Ridho | 13521093 | 
+| Juan Christopher Santoso | 13521116 | 
+| Rinaldy Adin | 13521134 | 
 
 
 ## **Folders and Files Description**
@@ -111,15 +111,16 @@ Every code displayed in this instruction assuming that the user runs the program
                     ├─ SearchEnemy.java
                     ├─ SearchFood.java
                     ├─ SearchSupernova.java
+                    ├─ SearchTeleporter.java
                     └─ SearchTorpedoes.java
                 ├─ Agents
                     ├─ Ling                             # Used Bot
                         ├─ Strategy
                             ├─ Attacker.java
                             ├─ Defender.java
-                            ├─ Explorer.java
                             ├─ EscapeGas.java
                             ├─ EvadeCollision.java
+                            ├─ Explorer.java
                             ├─ Shield.java
                             ├─ Sniper.java
                             ├─ Supernova.java
