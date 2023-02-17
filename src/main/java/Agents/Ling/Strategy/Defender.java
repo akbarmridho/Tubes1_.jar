@@ -2,10 +2,10 @@ package Agents.Ling.Strategy;
 
 import Actions.SearchTorpedoes;
 
-import java.util.Comparator;
 import java.util.List;
 
 import Actions.SearchSupernova;
+import Actions.SearchTeleporter;
 import Agents.Ling.Priority;
 import Agents.Ling.StrategyInterface;
 import Enums.PlayerActions;
@@ -13,32 +13,24 @@ import Models.GameObject;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
-import Utils.Math;
 
 public class Defender implements StrategyInterface {
     private final GameWatcher watcher = GameWatcherManager.getWatcher();
+    private List<GameObject> dangerousTorpedoes = null;
+    private List<GameObject> dangerousTeleporters = null;
+    private GameObject supernovaBomb = null;
 
     @Override
     public PlayerAction computeNextAction() {
         PlayerAction act = new PlayerAction();
         act.setAction(PlayerActions.FORWARD);
 
-        List<GameObject> dangerousTorpedoes = SearchTorpedoes.filterDangerousTorpedoes(watcher.player,
-                watcher.torpedoes);
-        GameObject closestTorpedo = dangerousTorpedoes.stream()
-                .min(Comparator.comparing(torpedo -> Math.getDistanceBetween(torpedo, watcher.player))).orElse(null);
-        GameObject supernovaBomb = SearchSupernova.getDangerousSupernova(watcher.player, watcher.others);
-
-        if (dangerousTorpedoes.isEmpty()) {
+        if (supernovaBomb != null) {
             act.setHeading(SearchSupernova.safestHeading());
-        } else if (supernovaBomb == null) {
-            act.setHeading(SearchTorpedoes.safestHeading());
-        } else if (Math.getDistanceBetween(watcher.player, supernovaBomb) > watcher.supernovaBlastRadius) {
-            act.setHeading(
-                    Math.getDistanceBetween(watcher.player, supernovaBomb) < Math.getDistanceBetween(watcher.player,
-                            closestTorpedo) ? SearchSupernova.safestHeading() : SearchTorpedoes.safestHeading());
+        } else if (!dangerousTeleporters.isEmpty()) {
+            act.setHeading(SearchTeleporter.safestHeading());
         } else {
-            act.setHeading(SearchSupernova.safestHeading());
+            act.setHeading(SearchTorpedoes.safestHeading());
         }
 
         return act;
@@ -46,8 +38,15 @@ public class Defender implements StrategyInterface {
 
     @Override
     public int getPriorityLevel() {
-        if (!SearchTorpedoes.filterDangerousTorpedoes(watcher.player, watcher.torpedoes).isEmpty()
-                || SearchSupernova.getDangerousSupernova(watcher.player, watcher.others) != null) {
+        this.dangerousTorpedoes = SearchTorpedoes.filterDangerousTorpedoes(watcher.player, watcher.torpedoes);
+        this.supernovaBomb = SearchSupernova.getDangerousSupernova(watcher.player, watcher.others);
+        this.dangerousTeleporters = SearchTeleporter.filterDangerousTeleporters(watcher.player, watcher.others,
+                watcher.enemies);
+
+        if (supernovaBomb != null) {
+            return Priority.EMERGENCY;
+        }
+        if (!dangerousTorpedoes.isEmpty() || !dangerousTeleporters.isEmpty()) {
             return Priority.HIGH;
         }
         return Priority.NONE;

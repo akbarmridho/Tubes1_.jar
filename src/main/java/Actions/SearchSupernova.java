@@ -14,8 +14,9 @@ public class SearchSupernova {
     public static GameObject getDangerousSupernova(GameObject player, List<GameObject> gameObjects) {
         return gameObjects.stream()
                 .filter(supernova -> supernova.gameObjectType == ObjectTypes.SUPERNOVA_BOMB
-                        && Utils.Math.projectileWillHit(supernova, player, SUPERNOVA_ADDED_BEARINGS,
-                                SUPERNOVA_DANGER_DIST))
+                        && (Utils.Math.projectileWillHit(supernova, player, SUPERNOVA_ADDED_BEARINGS,
+                                SUPERNOVA_DANGER_DIST)
+                                || Utils.Math.getDistanceBetween(supernova, player) <= SUPERNOVA_DANGER_DIST))
                 .findFirst()
                 .orElse(null);
     }
@@ -27,12 +28,14 @@ public class SearchSupernova {
 
         if (supernova == null) {
             return player.currentHeading;
-        } else if (Utils.Math.getDistanceBetween(player, supernova) <= watcher.supernovaBlastRadius
+        } else if (Utils.Math.getDistanceBetween(player, supernova) <= watcher.world.radius / 4
                 && Utils.Math.headingDiff(Utils.Math.getHeadingBetween(supernova, player),
-                        supernova.currentHeading) > 60) {
+                        supernova.currentHeading) >= 90) {
             return Utils.Math.getHeadingBetween(supernova, player);
         } else {
-            return (supernova.currentHeading + 90) % 360;
+            return supernova.currentHeading > Utils.Math.getHeadingBetween(supernova, player)
+                    ? supernova.currentHeading - 90
+                    : supernova.currentHeading + 90;
         }
     }
 }

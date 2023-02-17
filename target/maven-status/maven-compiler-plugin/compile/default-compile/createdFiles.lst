@@ -32,6 +32,7 @@ Models\GameState.class
 Agents\Ling\Strategy\EscapeGas.class
 Services\GameWatcherManager.class
 Models\GameStateDto.class
+Actions\SearchTeleporter.class
 Agents\AgentManager.class
 Actions\SearchTorpedoes.class
 Models\Position.class

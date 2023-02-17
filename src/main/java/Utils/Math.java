@@ -37,7 +37,7 @@ public class Math {
     }
 
     public static int getInterceptHeading(float projectileSpeed, int targetHeading, float targetSpeed, float xDis,
-                                          float yDis) {
+            float yDis) {
         // todo: sudut optimal untuk intercept
         var tgtDeg = toRadians(targetHeading);
         var adjAngle = java.lang.Math.atan(yDis / xDis);
@@ -124,7 +124,7 @@ public class Math {
     }
 
     public static boolean projectileWillHit(GameObject projectile, GameObject object, int addedDegrees,
-                                            int minDistance) {
+            int minDistance) {
         int dangerHeading = toDegrees(
                 java.lang.Math.abs(java.lang.Math.asin(object.size / getDistanceBetween(projectile, object))))
                 + addedDegrees;
