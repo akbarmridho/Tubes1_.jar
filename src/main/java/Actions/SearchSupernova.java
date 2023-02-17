@@ -34,8 +34,8 @@ public class SearchSupernova {
             return Utils.Math.getHeadingBetween(supernova, player);
         } else {
             return supernova.currentHeading > Utils.Math.getHeadingBetween(supernova, player)
-                    ? supernova.currentHeading - 90
-                    : supernova.currentHeading + 90;
+                    ? (supernova.currentHeading - 90) % 360
+                    : (supernova.currentHeading + 90) % 360;
         }
     }
 }
