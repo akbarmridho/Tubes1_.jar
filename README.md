@@ -11,7 +11,7 @@
 * [Folders and Files Description](#folders-and-files-description)
 
 ## **Program Description**
-*Galaxio* is a *battle-royale* competition game of several spaceships. Every player will be representated by a spaceship with a goal to be the last survivor of the game. Bot used in the game will be constructed using *greedy algorithm*. The spaceships (bots) used in the game are allowed to use various strategy to survive, including shooting torpedos to other ships, deploying shield and using wormhole to retreat, and colliding itself to other ships or food to increase its size. The bot inside this repository is developed using Java programming language.
+*Galaxio* is a *battle-royale* competition game of several spaceships. Every player is representated by a spaceship with a goal to be the last survivor of the game. Bot used in the game is constructed using *greedy algorithm*. The spaceships (bots) used in the game are allowed to use various strategy to survive, including shooting torpedos to other ships, deploying shield and using wormhole to retreat, and colliding itself to other ships or food to increase its size. The bot inside this repository is developed using Java programming language.
 
 ## **Required Program**
 Here are the things you need to prepare to run the program: 
@@ -30,7 +30,7 @@ Here are the things you need to prepare to run the program:
 1. Make sure that the required programs have been installed <br>
 2. Download and extract the game *starter-pack* <br>
 3. Clone this repository <br>
-    Preferably inside the extracted folder <br>
+    Note: Preferably inside the extracted folder <br>
     ```sh
     $ cd starter-pack/starter-bots
     ```
@@ -39,8 +39,8 @@ Here are the things you need to prepare to run the program:
     ```
 
 ### Starting the Program
-Every code displayed in this instruction assuming that the user runs the program with the *starter-pack* folder as the current directory in the terminal.
-1. Configurate the used bot count in the game you want to start. To change the settings, change the bot count variable inside `appsettings.json` inside the *runner-publish* and *engine-publish* folders.
+Every code displayed in these instructions is based on assumption that the user runs the program with the *starter-pack* folder as the current directory in the terminal.
+1. Configure the used bot count in the game you want to start. To change the settings, change the bot count variable inside `appsettings.json` inside the *runner-publish* and *engine-publish* folders.
 2. Inside the starter-pack folder, open a new terminal and run `GameRunner.dll`
     ```sh
     $ cd runner-publish
@@ -66,7 +66,7 @@ Every code displayed in this instruction assuming that the user runs the program
     ```sh
     # java -jar <path to the .jar file of this repo>
     # if you follow the instructions above, the .jar file should be inside the starter-bots folder
-    $ java -jar starter-bots/Tubes1_.jar/target/JavaBot.jar
+    $ java -jar starter-bots/Tubes1_.jar/target/dotjar.jar
     ```
 6. Extract the visualiser files inside the *visualiser* folder
 7. Open the extracted folder and run *Galaxio.exe*
@@ -76,18 +76,21 @@ Every code displayed in this instruction assuming that the user runs the program
 
 | Strategy |Point | Yes | No |
 |--|---|-----|------|
-| Attacking | Torpedos Deployment           | &check; |  |
+| Attacker | Torpedos Deployment           | &check; |  |
 |           | Closest Enemy Targeting       | &check; |  |
 |           | Angular Shooting Adjustment   | &check; |  |
-|           | Supernova Usage               |  | &check; |
-| Defending | Evading Torpedos and Teleporter | &check; |  |
-|           | Evading Supernova             | &check; |  |
-|           | Deploying Shield              | &check; |  |
+| Defender | Evading Torpedos and Teleporter | &check; |  |
+|           | Evading Supernova's Blast Impact         | &check; |  |
 |           | Runaway using Wormhole        |  | &check; |
-| Exploring | Shortest Food Path Finding    | &check; |  |
+| EscapeGas | Evading Gas Cloud Object | &check; |  |
+| EvadeCollision | Evading Potential Collision with another Bigger bot | &check; |  |
+| Explorer | Shortest Food Path Finding    | &check; |  |
 |           | Small Gas Cloud Shooting      | &check; |  |
 |           | 2 Same Distance Food Decision |  | &check; |
-|           | Going Outside of the Map Prevention | &check; |  |
+| Shield    | Deploying Shield              | &check; |  |
+| Sniper    | Deploying Torpedoes to another Bot from Long Range            | &check; |  |
+| Supernova | Supernova Usage               |  | &check; |
+| ToCenter | Prevent the Bot from Going Outside the Map | &check; |  |
 | Others    | Radar                         | &check; |  |
 |           | Late Game Strategy            |  | &check; |
 
