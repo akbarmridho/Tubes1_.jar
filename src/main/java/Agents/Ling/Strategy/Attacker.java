@@ -39,7 +39,16 @@ public class Attacker implements StrategyInterface {
             return clearSuddenTurn(adjustment);
         }
 
-        if (this.watcher.player.torpedoSalvoCount > 0) {
+        int torpedoTreshold = 0;
+//        if (this.watcher.player.size >= 100) {
+//            torpedoTreshold = 0;
+//        } else {
+//            torpedoTreshold = 2;
+//        }
+//
+//        torpedoTreshold =
+
+        if (this.watcher.player.torpedoSalvoCount > torpedoTreshold) {
             if ((this.watcher.radar.clearToShoot(this.target) && Math.getTrueDistanceBetween(this.watcher.player, this.target) < 700) ||
                     (this.watcher.enemies.size() == 1 && this.watcher.player.size >= 15)) {
                 return Armory.fireTorpedo(this.target);
@@ -96,7 +105,7 @@ public class Attacker implements StrategyInterface {
         // fokus mengejar tetapi tetap jaga jarak
         var angularVelocity = Math.calculateAngularVelocity(this.watcher.player, this.target);
         Integer[] safeSection;
-        var headingDiff = java.lang.Math.abs(target.currentHeading - this.watcher.player.currentHeading);
+        var headingDiff = Math.getModulus(target.currentHeading - this.watcher.player.currentHeading, 360);
 
         int ANGULAR_VELOCITY_OFFSET = 2;
 

@@ -1,11 +1,8 @@
 package Agents.Ling.Strategy;
 
-import Actions.SearchTorpedoes;
-
-import java.util.List;
-
 import Actions.SearchSupernova;
 import Actions.SearchTeleporter;
+import Actions.SearchTorpedoes;
 import Agents.Ling.Priority;
 import Agents.Ling.StrategyInterface;
 import Enums.PlayerActions;
@@ -13,6 +10,8 @@ import Models.GameObject;
 import Models.PlayerAction;
 import Services.GameWatcher;
 import Services.GameWatcherManager;
+
+import java.util.List;
 
 public class Defender implements StrategyInterface {
     private final GameWatcher watcher = GameWatcherManager.getWatcher();
@@ -43,10 +42,10 @@ public class Defender implements StrategyInterface {
         this.dangerousTeleporters = SearchTeleporter.filterDangerousTeleporters(watcher.player, watcher.others,
                 watcher.enemies);
 
-        if (supernovaBomb != null) {
+        if (supernovaBomb != null || !dangerousTeleporters.isEmpty()) {
             return Priority.EMERGENCY;
         }
-        if (!dangerousTorpedoes.isEmpty() || !dangerousTeleporters.isEmpty()) {
+        if (!dangerousTorpedoes.isEmpty()) {
             return Priority.HIGH;
         }
         return Priority.NONE;

@@ -33,7 +33,7 @@ public class Sniper implements StrategyInterface {
             return Priority.NONE;
         }
 
-        if (watcher.player.torpedoSalvoCount > 0 && watcher.player.size > 50 && (largestEnemy.size - watcher.player.size) > 60) {
+        if (watcher.player.torpedoSalvoCount > 0 && watcher.player.size > 30 && (largestEnemy.size - watcher.player.size) > 30) {
             this.target = largestEnemy;
             return Priority.HIGH;
         }

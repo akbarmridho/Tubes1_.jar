@@ -32,6 +32,10 @@ public class RadarSection {
 
     public void updateAsteroidField(GameObject object, int range) {
         this.getAreaByRange(range).updateAsteroidField(object);
+
+        if (range >= 250) {
+            this.short_range.updateOther(object);
+        }
     }
 
     public void updateGasCloud(GameObject object, int range) {

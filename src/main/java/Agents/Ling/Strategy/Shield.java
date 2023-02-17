@@ -33,7 +33,7 @@ public class Shield implements StrategyInterface {
 
         if (this.watcher.player.shieldCount > 0 &&
                 SearchTorpedoes.filterDangerousTorpedoes(watcher.player, watcher.torpedoes).size() >= 2 &&
-                (this.watcher.player.getSize() >= 80 || (dangerousEnemy && watcher.player.size > 35))) {
+                (this.watcher.player.getSize() >= 80 || (dangerousEnemy && watcher.player.size > 30))) {
             return Priority.EMERGENCY;
         }
 

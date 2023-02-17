@@ -53,7 +53,7 @@ public class EvadeCollision implements StrategyInterface {
 
         double tick = Math.tickTillCollision(target, this.watcher.player);
 
-        if (tick <= 2.5 && target.size > watcher.player.size) {
+        if (tick <= 2.5 && target.size + 15 > watcher.player.size) {
             this.target = target;
             return Priority.EMERGENCY;
         }

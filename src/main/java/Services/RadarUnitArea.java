@@ -7,6 +7,7 @@ import Utils.Math;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class RadarUnitArea {
@@ -70,7 +71,7 @@ public class RadarUnitArea {
         if (this.foods.size() == 0) {
             return 0;
         }
-        
+
         return this.foods.stream().mapToInt(element -> {
             if (element.gameObjectType == ObjectTypes.FOOD) {
                 return 1;
@@ -100,7 +101,23 @@ public class RadarUnitArea {
         return this.measureFoodAdvantage() -
                 this.measureThreatLevel() -
                 this.measureTorpedoThreatLevel() -
-                this.measureTerrainDisadvantage();
+                this.measureTerrainDisadvantage() - measureTeleporterDisadvantage();
+    }
+
+    public double measureTeleporterDisadvantage() {
+        AtomicBoolean hasTeleporter = new AtomicBoolean(false);
+
+        this.others.forEach(other -> {
+            if (other.gameObjectType == ObjectTypes.TELEPORTER) {
+                hasTeleporter.set(true);
+            }
+        });
+
+        if (hasTeleporter.get()) {
+            return 100;
+        }
+
+        return 0;
     }
 
     public GameObject getClosestFood() {
