@@ -7,7 +7,7 @@
 * [Required Program](#required-program)
 * [How to Run The Program](#how-to-run-the-program)
 * [Progress Report](#progress-report)
-* [Authors and Workload Distribution](#authors-and-workload-distribution)
+* [Authors](#authors)
 * [Folders and Files Description](#folders-and-files-description)
 
 ## **Program Description**
