@@ -140,4 +140,8 @@ public class GameObject {
     public boolean isAfterburnerActive() {
         return (this.effects & 1) == 1;
     }
+
+    public boolean isInsideGasCloud() {
+        return (this.effects >> 2) % 2 == 1;
+    }
 }
