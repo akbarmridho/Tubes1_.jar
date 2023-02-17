@@ -6,12 +6,13 @@
 * [Program Description](#program-description)
 * [Required Program](#required-program)
 * [How to Run The Program](#how-to-run-the-program)
+* [Implemented Greedy Algorithm](#implemented-greedy-algorithm)
 * [Progress Report](#progress-report)
 * [Authors](#authors)
 * [Folders and Files Description](#folders-and-files-description)
 
 ## **Program Description**
-*Galaxio* is a *battle-royale* competition game of several spaceships. Every player is representated by a spaceship with a goal to be the last survivor of the game. Bot used in the game is constructed using *greedy algorithm*. The spaceships (bots) used in the game are allowed to use various strategy to survive, including shooting torpedos to other ships, deploying shield and using wormhole to retreat, and colliding itself to other ships or food to increase its size. The bot inside this repository is developed using Java programming language.
+*Galaxio* is a *battle-royale* competition game of several spaceships. Every player is represented by a spaceship with a goal to be the last survivor of the game. Bot in the game is constructed using a *greedy algorithm*. The spaceships (bots) used in the game are allowed to use various strategies to survive, including shooting torpedos at other ships, deploying shields, and colliding itself to other ships or food to increase their size. The bot inside this repository is developed using Java programming language.
 
 ## **Required Program**
 Here are the things you need to prepare to run the program: 
@@ -71,6 +72,8 @@ Every code displayed in these instructions is based on assumption that the user 
 6. Extract the visualiser files inside the *visualiser* folder
 7. Open the extracted folder and run *Galaxio.exe*
 
+## **Implemented Greedy Algorithm**
+The greedy algorithm used in the bot development can be divided into several major strategies and minor strategies. The major strategies are called at most of the time to perform major tasks. Those are **Attacking**, **Defending**, and **Exploring** strategies. On the other hand, minor strategies are the ones that are called out in specific conditions to increase the bot's survivability. In other words, those strategies are developed to support the major ones. The minor ones are **EscapeGas**, **EvadeCollision**, **Shield**, **Sniper**, **Supernova**, and **ToCenter**.
 
 ## **Progress Report**
 
